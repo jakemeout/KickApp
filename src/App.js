@@ -1,25 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
+// import Cookies from 'js-cookie';
+import Navbar from './components/Navbar'
+import {BaseProvider, LightTheme} from 'baseui';
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import { Provider as StyletronProvider } from "styletron-react";
+import { Client as Styletron } from "styletron-engine-atomic";
+
+// import { createStore } from 'redux'
 import './App.css';
+const engine = new Styletron();
 
 function App() {
+  
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <StyletronProvider value={engine}>
+          <BaseProvider theme={LightTheme}>
+          <Navbar 
+          />
+          </BaseProvider>
+      </StyletronProvider>
+      </Router>
   );
 }
 
