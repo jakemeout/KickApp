@@ -12,6 +12,12 @@ import {
 
 
 export function createUser(user) {
+  const setCookie = (cname, cvalue, exdays) => {
+    var d = new Date();
+    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  };
   return (dispatch) => {
     dispatch({ type: SIGNUP });
     fetch("http://localhost:3001/api/v1/users", {
@@ -24,6 +30,7 @@ export function createUser(user) {
     })
       .then((resp) => resp.json())
       .then((user) => {
+        setCookie("jwt", user.jwt, 1);
         dispatch({ type: CREATE_CURRENT_USER, user });
       })
       .catch((err) => {
