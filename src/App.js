@@ -1,29 +1,48 @@
-import React from 'react';
-// import Cookies from 'js-cookie';
-import Navbar from './components/Navbar'
-import {BaseProvider, LightTheme} from 'baseui';
-import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
+import React from "react";
+import Navbar from "./components/Navbar";
+import { BaseProvider, LightTheme } from "baseui";
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
+import { connect } from "react-redux";
+import { getProfileFetch } from "./redux/actions";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./components/Home";
+import BrowseContainer from "./components/BrowseContainer";
+import "./styles/App.css";
+import "./styles/Home.css";
 
-// import { createStore } from 'redux'
-import './App.css';
 const engine = new Styletron();
 
-function App() {
-  
+class App extends React.Component {
+  componentDidMount = () => {
+    this.props.getProfileFetch();
+    
+  };
 
-
-  return (
-    <Router>
+  render() {
+    console.log("APP", this.props);
+    return (
+      <Router>
         <StyletronProvider value={engine}>
           <BaseProvider theme={LightTheme}>
-          <Navbar 
-          />
+            <Navbar {...this.props} />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/browse" component={BrowseContainer} />
+            </Switch>
           </BaseProvider>
-      </StyletronProvider>
+        </StyletronProvider>
       </Router>
-  );
+    );
+  }
+}
+function msp(state) {
+  return state;
 }
 
-export default App;
+const mdp = (dispatch) => ({
+  getProfileFetch: () => dispatch(getProfileFetch()),
+  
+});
+
+export default connect(msp, mdp)(App);
