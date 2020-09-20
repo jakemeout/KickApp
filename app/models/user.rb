@@ -6,5 +6,5 @@ class User < ApplicationRecord
     has_many :developed_projects, class_name: :Project, foreign_key: :project_developer_id
     has_many :submitted_projects, class_name: :Project, foreign_key: :project_submitter_id
     has_many :project_comments
-    has_many :submitter
+    # has_many :submitter
 end
