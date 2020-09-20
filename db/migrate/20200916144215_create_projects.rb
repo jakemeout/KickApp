@@ -1,8 +1,8 @@
 class CreateProjects < ActiveRecord::Migration[6.0]
   def change
     create_table :projects do |t|
-      t.integer :project_submitter_id
-      t.integer :project_developer_id
+      t.integer :project_submitter_id, foreign_key: {to_table: 'users'}
+      t.integer :project_developer_id, foreign_key: {to_table: 'users'}
       t.string :project_name
       t.string :project_problem_statement
       t.string :project_idea_summary
