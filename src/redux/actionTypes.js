@@ -7,4 +7,6 @@ export const SUBMIT_PROJECT_IDEA = "SUBMIT_PROJECT_IDEA";
 export const GET_ALL_PROJECTS = "GET_ALL_PROJECTS"
 export const GET_ONE_PROJECT = "GET_ONE_PROJECT"
 export const BROWSE = "BROWSE"
+export const VOTE = "VOTE"
+export const VOTE_PROJECT = "VOTE_PROJECT"
 

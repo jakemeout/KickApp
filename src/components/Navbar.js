@@ -13,6 +13,7 @@ import {
 } from "baseui/icon";
 import { Unstable_AppNavBar as AppNavBar, POSITION } from "baseui/app-nav-bar";
 import { Link } from "react-router-dom";
+import BrowseContainer from './BrowseContainer'
 import Login from "./Login";
 import Signup from "./Signup";
 import SubmitIdea from "./SubmitIdea"; 
@@ -153,19 +154,21 @@ export const Navbar = ({ userInfo }) => {
     },
   ];
 
+
+
   function renderBrowseIdeas() {
     return (
-      <StyledLink
-        $style={{
-          textDecoration: "none",
-          color: "inherit",
-          ":hover": { color: "inherit" },
-          ":visited": { color: "inherit" },
-        }}
-        href={"/browse"}
+      <Link
+        // $style={{
+        //   textDecoration: "none",
+        //   color: "inherit",
+        //   ":hover": { color: "inherit" },
+        //   ":visited": { color: "inherit" },
+        // }}
+        to="/browse"
       >
         Browse Ideas
-      </StyledLink>
+      </Link>
     );
   }
 
@@ -255,8 +258,6 @@ export const Navbar = ({ userInfo }) => {
           isSubmitIdeaShowing={isSubmitIdeaShowing}
           hide={() => setIsSubmitIdeaShowing(false)}
         />
-        
-
         <div className={containerStyles}>
           <AppNavBar
             appDisplayName={appDisplayName}

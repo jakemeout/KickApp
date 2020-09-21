@@ -6,7 +6,7 @@ import {
     } from "../actionTypes";
     const initialState = {
       project: {},
-      projects: {},
+      projects: [],
       error: null
     };
 
@@ -22,6 +22,11 @@ import {
             ...state,
             ...action.projects,
         }
+        // case VOTE:
+        // return {
+        //     ...state,
+        //     ...action.projects,
+        // }
         case ERROR:
             return {
               ...state,

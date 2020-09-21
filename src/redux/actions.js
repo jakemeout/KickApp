@@ -7,6 +7,8 @@ import {
   IS_LOGGED_IN,
   SUBMIT_PROJECT_IDEA,
   GET_ALL_PROJECTS,
+  VOTE,
+  VOTE_PROJECT,
   BROWSE
 } from "../redux/actionTypes";
 
@@ -129,7 +131,32 @@ export function getProjects() {
     })
       .then((resp) => resp.json())
       .then((projects) => {
+        
         dispatch({ type: GET_ALL_PROJECTS, projects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+  };
+}
+
+export function patchAddVote(updatedProject) {
+  const token = Cookies.get("jwt")
+  return (dispatch) => {
+    dispatch({ type: VOTE_PROJECT });
+    fetch(`http://localhost:3001/api/v1/projects/${updatedProject.id}`, {
+      method: "PATCH",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ project: updatedProject })
+    })
+      .then((resp) => resp.json())
+      .then((project) => {
+        
+        dispatch({ type: VOTE, project });
       })
       .catch((err) => {
         dispatch({ type: ERROR, err });

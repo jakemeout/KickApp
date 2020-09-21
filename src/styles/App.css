@@ -28,7 +28,7 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@keyframes App-logo-sin {
   from {
     transform: rotate(0deg);
   }
@@ -37,3 +37,132 @@
   }
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+
+  margin-top: 80px;
+  width: 716px;
+  height: 428px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.card p {
+  padding-top: 5%;
+}
+
+/* CARDS */
+
+.idea-cards-container {
+  margin-top: 10%;
+  margin-left: 20%;
+  margin-right: 25%;
+  width: 60%;
+}
+
+.bookmark {
+  position: absolute;
+  width: 24px;
+  height: 27px;
+  left: 650px;
+  top: 0px;
+}
+.sponsor-card {
+  position: absolute;
+  width: 24px;
+  height: 27px;
+  left: 580px;
+  bottom: 0px;
+}
+.total-sponsored {
+  position: absolute;
+  width: 121px;
+  left: 450px;
+  bottom: 0px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+}
+.thumbsdown {
+  position: static;
+  width: 28px;
+  height: 27px;
+  left: 652px;
+  top: 5px;
+}
+.thumbsup {
+  position: static;
+  width: 28px;
+  height: 27px;
+  left: 652px;
+  top: 5px;
+}
+
+.card-author {
+  position: absolute;
+  width: 676px;
+  height: 53px;
+  left: 20px;
+  top: 30px;
+}
+
+.ellipses {
+  position: absolute;
+  width: 53px;
+  height: 53px;
+  left: 20px;
+  top: 15px;
+  border-radius: 80%;
+
+  background: #6ec29b;
+}
+
+.card-author > .submitter-name {
+  position: absolute;
+  width: 129px;
+  height: 21px;
+  left: 90px;
+  top: 35px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.tags-votes {
+  position: absolute;
+  width: 676px;
+  height: 31px;
+  left: 20px;
+  bottom: 75px;
+}
+
+.tags-votes > .num-upvote {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 580px;
+  top: 10px;
+}
+.tags-votes > .num-downvote {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 625px;
+  top: 14px;
+}
+.card-details {
+  position: absolute;
+  width: 676px;
+  height: 100px;
+  left: 20px;
+  top: 110px;
+}
+
+.submitted-on{
+  font-size: 12px;
+  text-align: center;
+}

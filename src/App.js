@@ -42,7 +42,7 @@ function msp(state) {
 
 const mdp = (dispatch) => ({
   getProfileFetch: () => dispatch(getProfileFetch()),
-  
+
 });
 
 export default connect(msp, mdp)(App);
