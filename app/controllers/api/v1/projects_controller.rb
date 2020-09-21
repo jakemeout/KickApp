@@ -9,10 +9,21 @@ class Api::V1::ProjectsController < ApplicationController
           render json: { error: 'failed to create project' }, status: :not_acceptable
         end
     end
+
+    def update
+      @project = Project.find(params[:id])
+      @project.update(project_params)
+      if @project.valid?
+        render json: { projects: @project}, status: :updated
+      else
+        render json: { error: 'failed to update project' }, status: :not_acceptable
+      end
+    end
     
     def index
         @projects = Project.all
-        render json: { projects: @projects }, status: :accepted
+        # @projects.sort_by(&:num_up_votes)
+        render json: {projects: @projects}, :include => :project_submitter, status: :accepted
     end
     
     private
@@ -39,3 +50,4 @@ class Api::V1::ProjectsController < ApplicationController
             :sponsor_amount)
     end
 end
+

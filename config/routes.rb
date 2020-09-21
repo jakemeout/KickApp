@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post '/login', to: 'auth#create'
       get '/projects', to: 'projects#index'
       get '/profile', to: 'users#profile'
+      patch '/projects/:id', to: 'projects#update'
     end
   end
 end
