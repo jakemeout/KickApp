@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_19_134906) do
+ActiveRecord::Schema.define(version: 2020_09_22_194223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "sponsor_id"
+    t.integer "project_id"
+    t.integer "amount_paid"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "project_comments", force: :cascade do |t|
     t.integer "project_id"
@@ -50,6 +58,8 @@ ActiveRecord::Schema.define(version: 2020_09_19_134906) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "claimed", default: false, null: false
+    t.integer "claimed_by"
   end
 
   create_table "users", force: :cascade do |t|

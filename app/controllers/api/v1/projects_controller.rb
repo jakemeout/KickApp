@@ -21,9 +21,10 @@ class Api::V1::ProjectsController < ApplicationController
     end
     
     def index
-        @projects = Project.all
-        # @projects.sort_by(&:num_up_votes)
-        render json: {projects: @projects}, :include => :project_submitter, status: :accepted
+         projects = Project.all
+        sorted_projects = projects.sort_by { |a| [a.num_up_votes ? 1 : 0, a.num_up_votes] }.reverse!
+        
+        render json: {projects: sorted_projects}, :include => :project_submitter, status: :accepted
     end
     
     private
