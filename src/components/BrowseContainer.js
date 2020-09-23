@@ -5,17 +5,14 @@ import { getProjects } from "../redux/actions";
 import { getSavedProjects } from "../redux/actions";
 
 class BrowseContainer extends React.Component {
-  // constructor(props) {
-  //     super(props);
-  //     // Don't call this.setState() here!
+  componentWillMount() {
+    this.props.getProjects();
+  }
 
-  //     console.log("browse", props)
-  //     this.props.getSavedProjects()
-  //   }
-
-  componentDidMount() {
-    console.log("-->", this.props.userInfo.user);
-    this.props.getProjects()
+  componentDidUpdate(prevProps) {
+    if (this.props.userInfo.user.id !== prevProps.userInfo.user.id) {
+      this.props.getSavedProjects(this.props.userInfo.user);
+    }
   }
 
   renderIdeas = () => {
@@ -23,13 +20,11 @@ class BrowseContainer extends React.Component {
     const { user } = this.props.userInfo;
 
     return projects?.map((project) => (
-      <IdeaCard key={project.id} project={project} user={user} userSavedProject={useReducer.user_saved_projects}/>
+      <IdeaCard key={project.id} project={project} />
     ));
   };
 
   render() {
-    console.log("==->", this.props.userInfo.user);
-
     return (
       <React.Fragment>
         <div className="idea-cards-container">
@@ -44,7 +39,7 @@ class BrowseContainer extends React.Component {
 const mdp = (dispatch) => {
   return {
     getProjects: () => dispatch(getProjects()),
-    getSavedProjects: () => dispatch(getSavedProjects()),
+    getSavedProjects: (user) => dispatch(getSavedProjects(user)),
   };
 };
 

@@ -8,20 +8,18 @@ import { getProfileFetch } from "./redux/actions";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
 import BrowseContainer from "./components/BrowseContainer";
-import SavedProjects from "./components/SavedProjects"
+import SavedProjects from "./components/SavedProjects";
 import "./styles/App.css";
 import "./styles/Home.css";
 
 const engine = new Styletron();
 
 class App extends React.Component {
-  
   componentDidMount = () => {
     this.props.getProfileFetch();
   };
 
   render() {
-    
     return (
       <Router>
         <StyletronProvider value={engine}>
@@ -44,8 +42,6 @@ function msp(state) {
 
 const mdp = (dispatch) => ({
   getProfileFetch: () => dispatch(getProfileFetch()),
-  
-
 });
 
 export default connect(msp, mdp)(App);

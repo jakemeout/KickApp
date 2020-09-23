@@ -8,9 +8,8 @@ import {
   SAVE,
   GET_SAVED,
   DELETE_SAVED,
-  BROWSE
+  BROWSE,
 } from "../redux/actionTypes";
-
 
 export function createUser(user) {
   const setCookie = (cname, cvalue, exdays) => {
@@ -90,9 +89,8 @@ export const getProfileFetch = () => {
   };
 };
 
-
 export function createProject(project) {
-  const token = Cookies.get("jwt")
+  const token = Cookies.get("jwt");
   return (dispatch) => {
     dispatch({ type: SUBMIT_PROJECT_IDEA });
     fetch("http://localhost:3001/api/v1/projects", {
@@ -100,7 +98,7 @@ export function createProject(project) {
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ project: project }),
     })
@@ -115,7 +113,7 @@ export function createProject(project) {
 }
 
 export function getProjects() {
-  const token = Cookies.get("jwt")
+  const token = Cookies.get("jwt");
   return (dispatch) => {
     dispatch({ type: BROWSE });
     fetch("http://localhost:3001/api/v1/projects", {
@@ -123,12 +121,11 @@ export function getProjects() {
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((resp) => resp.json())
       .then((projects) => {
-        
         dispatch({ type: GET_ALL_PROJECTS, projects });
       })
       .catch((err) => {
@@ -138,20 +135,19 @@ export function getProjects() {
 }
 
 export function patchAddVote(updatedProject) {
-  const token = Cookies.get("jwt")
+  const token = Cookies.get("jwt");
   return (dispatch) => {
     fetch(`http://localhost:3001/api/v1/projects/${updatedProject.id}`, {
       method: "PATCH",
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ project: updatedProject })
+      body: JSON.stringify({ project: updatedProject }),
     })
       .then((resp) => resp.json())
       .then((project) => {
-        
         dispatch({ type: VOTE, project });
       })
       .catch((err) => {
@@ -161,69 +157,66 @@ export function patchAddVote(updatedProject) {
 }
 
 export function postSaveProject(project, user) {
-  const token = Cookies.get("jwt")
-  return (dispatch) => fetch(`http://localhost:3001/api/v1/save`, {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/save`, {
       method: "POST",
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         project_id: project.id,
-        user_id: user.id
-       })
+        user_id: user.id,
+      }),
     })
       .then((resp) => resp.json())
-      .then((project) => {
-        
-        dispatch({ type: SAVE, project });
+      .then(({ savedProjects }) => {
+        dispatch({ type: SAVE, savedProjects });
       })
       .catch((err) => {
         dispatch({ type: ERROR, err });
       });
-  };
+}
 
- export function getSavedProjects(user){
-  
-    const token = Cookies.get("jwt");
-    return (dispatch) => {
-        return fetch(`http://localhost:3001/api/v1/save/${user?.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        })
-          .then((resp) => resp.json())
-          .then((savedProjects) => {
-            console.log("----", savedProjects)
-            dispatch({ type: GET_SAVED, savedProjects});
-          })
-          .catch((err) => {
-            dispatch({ type: ERROR, err });
-          });
-      }
-    };
-  
-  export function removeSavedProject(savedUserid) {
-    const token = Cookies.get("jwt")
-    return (dispatch) => fetch(`http://localhost:3001/api/v1/save/${savedUserid}`, {
-        method: "DELETE",
-        headers: {
-          accepts: "application/json",
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+export function getSavedProjects(user) {
+  const token = Cookies.get("jwt");
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/api/v1/save/${user?.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then(({ savedProjects }) => {
+        dispatch({ type: GET_SAVED, savedProjects });
       })
-        .then((resp) => resp.json())
-        .then((savedProjects) => {
-          
-          dispatch({ type: DELETE_SAVED, savedProjects });
-        })
-        .catch((err) => {
-          dispatch({ type: ERROR, err });
-        });
-    };
-  
+    .catch((err) => {
+      dispatch({ type: ERROR, err });
+    });
+  };
+}
+
+export function removeSavedProject(savedUserid) {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/save/${savedUserid}`, {
+      method: "DELETE",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then(({ savedProjects }) => {
+        dispatch({ type: DELETE_SAVED, savedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+}

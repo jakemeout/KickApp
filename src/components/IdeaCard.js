@@ -10,15 +10,15 @@ class IdeaCard extends React.Component {
   state = {
     upVoteClicked: false,
     downVoteClicked: false,
-    project: this.props.project ? this.props.project : 0,
+    project: this.props.project || 0,
     isStripeShowing: false,
-    // saveClicked: false,
   };
 
   isSavedByUser() {
-    const { project, user } = this.props;
-    const { user_saved_projects } = user;
-    return (user_saved_projects || []).find((a) => a.project_id === project.id);
+    const { project, projectInfo } = this.props;
+    return (projectInfo.savedProjects || []).find(
+      (a) => a.project_id === project.id
+    );
   }
 
   getFormattedDate = (date) => {
@@ -28,16 +28,18 @@ class IdeaCard extends React.Component {
   };
 
   handleSave = (clicked) => {
-    const { user_saved_projects } = this.props.user;
-    const { project } = this.props;
-    const { user } = this.props;
-
+    const {
+      userInfo,
+      project,
+      postSaveProject,
+      removeSavedProject,
+    } = this.props;
     if (clicked) {
-      this.props.postSaveProject(project, user);
+      postSaveProject(project, userInfo.user);
     } else {
       let savedProject = this.isSavedByUser();
       let savedUserid = savedProject.id;
-      this.props.removeSavedProject(savedUserid);
+      removeSavedProject(savedUserid);
     }
   };
 
@@ -70,11 +72,9 @@ class IdeaCard extends React.Component {
   };
 
   render() {
-    console.log(this.props.user.user_saved_projects);
-    const { project } = this.props;
-    // const { saveClicked } = this.state;
-
+    const { project, userInfo } = this.props;
     const isSavedClick = this.isSavedByUser();
+
     return (
       <React.Fragment>
         <div className="card">
@@ -106,7 +106,7 @@ class IdeaCard extends React.Component {
                 style={{ cursor: "pointer" }}
               />
             </div>
-            {this.props.user.is_developer && (
+            {userInfo.user.is_developer && (
               <div className="claim-div">
                 <button className="claim-button" onClick={null}>
                   Claim
@@ -154,8 +154,8 @@ class IdeaCard extends React.Component {
         <Stripe
           isStripeShowing={this.state.isStripeShowing}
           toggle={this.handleSponsor}
-          user={this.props.userinfo}
-          project={this.props.project}
+          user={userInfo.user}
+          project={project}
         />
       </React.Fragment>
     );
@@ -164,7 +164,8 @@ class IdeaCard extends React.Component {
 
 function msp(state) {
   return {
-    userinfo: state.userInfo,
+    userInfo: state.userInfo,
+    projectInfo: state.projectInfo,
   };
 }
 const mdp = (dispatch) => {
