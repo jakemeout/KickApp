@@ -14,7 +14,7 @@ class Api::V1::UserSavedProjectsController < ApplicationController
      
       saved_projects = UserSavedProject.where(user_id: params[:id])
     
-      render json: {savedProjects: saved_projects}, status: :accepted
+      render json: {savedProjects: saved_projects }, :include => :user, status: :accepted
     end
 
     def delete
@@ -26,6 +26,6 @@ class Api::V1::UserSavedProjectsController < ApplicationController
 
     private
     def user_saved_projects_params
-        params.require(:user_saved_projects).permit(:project_id, :user_id)
+        params.require(:user_saved_projects).permit(:project_id, :user_id, )
     end
 end
