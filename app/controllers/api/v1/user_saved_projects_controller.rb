@@ -4,7 +4,7 @@ class Api::V1::UserSavedProjectsController < ApplicationController
     def create
         saved_project = UserSavedProject.create(project_id: params[:project_id], user_id: params[:user_id])
         if saved_project.valid?
-          render json: { saved_project: saved_project}, status: :created
+          render json: { savedProjects: UserSavedProject.all}, status: :created
         else
           render json: { error: 'failed to create saved_project' }, status: :not_acceptable
         end
