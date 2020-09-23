@@ -2,24 +2,47 @@ import React from "react";
 import { connect } from "react-redux";
 import Moment from "moment";
 import { patchAddVote } from "../redux/actions";
+import { postSaveProject } from "../redux/actions";
+import { removeSavedProject } from "../redux/actions";
+import Stripe from "./Stripe";
 
 class IdeaCard extends React.Component {
   state = {
     upVoteClicked: false,
     downVoteClicked: false,
     project: this.props.project ? this.props.project : 0,
+    isStripeShowing: false,
+    // saveClicked: false,
   };
-  GetFormattedDate = (date) => {
+
+  isSavedByUser() {
+    const { project, user } = this.props;
+    const { user_saved_projects } = user;
+    return (user_saved_projects || []).find((a) => a.project_id === project.id);
+  }
+
+  getFormattedDate = (date) => {
     Moment.locale("en");
     var dt = date;
     return Moment(dt).format("LLLL");
   };
-  handleSave = () => {
-    console.log("It's THE CARD BOOKMARK CLICK");
+
+  handleSave = (clicked) => {
+    const { user_saved_projects } = this.props.user;
+    const { project } = this.props;
+    const { user } = this.props;
+
+    if (clicked) {
+      this.props.postSaveProject(project, user);
+    } else {
+      let savedProject = this.isSavedByUser();
+      let savedUserid = savedProject.id;
+      this.props.removeSavedProject(savedUserid);
+    }
   };
 
   handleSponsor = () => {
-    console.log("It's THE CARD SPONSOR CLICK");
+    this.setState({ isStripeShowing: !this.state.isStripeShowing });
   };
 
   handleVote = (isThumbUp = true) => {
@@ -47,7 +70,11 @@ class IdeaCard extends React.Component {
   };
 
   render() {
+    console.log(this.props.user.user_saved_projects);
     const { project } = this.props;
+    // const { saveClicked } = this.state;
+
+    const isSavedClick = this.isSavedByUser();
     return (
       <React.Fragment>
         <div className="card">
@@ -55,29 +82,44 @@ class IdeaCard extends React.Component {
             <div className="ellipses"></div>
             <div className="submitter-name">{`${project.project_submitter.first_name} ${project.project_submitter.last_name}`}</div>
             <div className="total-sponsored">
-              Total Sponsored: {project.sponsor_amount}
+              Total Sponsored: {project?.sponsor_amount}
             </div>
             <div className="bookark-div">
               <img
+                alt="bookmark"
                 className="bookmark"
-                src={require("./bookmark.png")}
-                onClick={() => this.handleSave()}
+                src={
+                  isSavedClick
+                    ? require("./bookmark_black.png")
+                    : require("./bookmark.png")
+                }
+                onClick={() => this.handleSave(!isSavedClick)}
                 style={{ cursor: "pointer" }}
               />
             </div>
             <div className="sponsor">
               <img
+                alt="sponsor"
                 className="sponsor-card"
                 src={require("./sponsor.png")}
                 onClick={() => this.handleSponsor()}
                 style={{ cursor: "pointer" }}
               />
             </div>
+            {this.props.user.is_developer && (
+              <div className="claim-div">
+                <button className="claim-button" onClick={null}>
+                  Claim
+                </button>
+              </div>
+            )}
           </div>
+
           <div className="tags-votes">
             <div className="num-upvote">
               {this.state.project.num_up_votes}
               <img
+                alt="thumbsup"
                 className="thumbsup"
                 src={require("./thumbsUp.png")}
                 onClick={() => this.handleVote(true)}
@@ -87,6 +129,7 @@ class IdeaCard extends React.Component {
             <div className="num-downvote">
               {this.state.project.num_down_votes}
               <img
+                alt="thumbsdown"
                 className="thumbsdown"
                 src={require("./thumbsDown.png")}
                 onClick={() => this.handleVote(false)}
@@ -97,7 +140,7 @@ class IdeaCard extends React.Component {
           <div className="card-details">
             <div className="submitted-on">
               {" "}
-              Submitted on: {this.GetFormattedDate(project.created_at)}
+              Submitted on: {this.getFormattedDate(project.created_at)}
             </div>
             <div className="idea-name"> Idea Name: {project.project_name}</div>
             <div className="problem-name">
@@ -108,6 +151,12 @@ class IdeaCard extends React.Component {
             </div>
           </div>
         </div>
+        <Stripe
+          isStripeShowing={this.state.isStripeShowing}
+          toggle={this.handleSponsor}
+          user={this.props.userinfo}
+          project={this.props.project}
+        />
       </React.Fragment>
     );
   }
@@ -121,29 +170,11 @@ function msp(state) {
 const mdp = (dispatch) => {
   return {
     patchAddVote: (project) => dispatch(patchAddVote(project)),
+    postSaveProject: (project, user) =>
+      dispatch(postSaveProject(project, user)),
+    removeSavedProject: (savedUserid) =>
+      dispatch(removeSavedProject(savedUserid)),
   };
 };
 
 export default connect(msp, mdp)(IdeaCard);
-
-// abandoned: false
-// abandoned_date: null
-// archived: false
-// archived_date: null
-// completed: false
-// created_at: "2020-09-20T01:55:42.663Z"
-// id: 1
-// in_progress: false
-// is_claimed: false
-// num_down_votes: null
-// num_up_votes: null
-// project_developer_id: 1
-// project_end_date: null
-// project_idea_summary: null
-// project_name: "test"
-// project_problem_statement: null
-// project_start_date: null
-// project_started: false
-// project_submitter_id: 1
-// sponsor_amount: null
-// updated_at: "2020-09-20T0

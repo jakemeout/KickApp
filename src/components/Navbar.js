@@ -3,17 +3,16 @@ import { useState } from "react";
 import { useStyletron } from "baseui";
 import { StyledLink } from "baseui/link";
 import { Layer } from "baseui/layer";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import Cookies from "js-cookie";
 import {
-  ChevronDown,
+  
   Delete,
   Overflow as UserIcon,
   Upload as Icon,
 } from "baseui/icon";
 import { Unstable_AppNavBar as AppNavBar, POSITION } from "baseui/app-nav-bar";
 import { Link } from "react-router-dom";
-import BrowseContainer from './BrowseContainer'
 import Login from "./Login";
 import Signup from "./Signup";
 import SubmitIdea from "./SubmitIdea"; 
@@ -25,17 +24,11 @@ function renderItem(item) {
 
 function renderSavedIdeas() {
   return (
-    <StyledLink
-      $style={{
-        textDecoration: "none",
-        color: "inherit",
-        ":hover": { color: "inherit" },
-        ":visited": { color: "inherit" },
-      }}
-      href={"/SavedIdeas"}
+    <Link
+      to={"/saved"}
     >
       Saved Ideas
-    </StyledLink>
+    </Link>
   );
 }
 
@@ -65,7 +58,7 @@ const appDisplayName = (
     }}
     href={"/"}
   >
-    <img className="logo" src={require("./brainlight.png")} />
+    <img  alt="brainlight-logo" className="logo" src={require("./brainlight.png")} />
   </StyledLink>
 );
 

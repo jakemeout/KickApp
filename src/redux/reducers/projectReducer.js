@@ -1,16 +1,20 @@
 import {
     SUBMIT_PROJECT_IDEA,
     ERROR,
-    GET_ALL_PROJECTS
-    // SIGNUP
+    GET_ALL_PROJECTS,
+    GET_SAVED,
+    DELETE_SAVED
     } from "../actionTypes";
     const initialState = {
       project: {},
       projects: [],
+      savedProjects: [],
+
       error: null
     };
 
     const projectReducer = (state = initialState, action) => {
+      console.log(action.savedProjects)
       switch (action.type) {
         case SUBMIT_PROJECT_IDEA:
           return {
@@ -22,15 +26,20 @@ import {
             ...state,
             ...action.projects,
         }
-        // case VOTE:
-        // return {
-        //     ...state,
-        //     ...action.projects,
-        // }
+        case GET_SAVED:
+        return {
+            ...state,
+            ...action.savedProjects,
+        }
+        case DELETE_SAVED:
+        return {
+            ...state,
+            ...action.savedProjects,
+        }
         case ERROR:
-            return {
-              ...state,
-              error: action.error
+          return {
+            ...state,
+            ...action.error
           }
         default:
           return state;

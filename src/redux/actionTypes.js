@@ -9,4 +9,7 @@ export const GET_ONE_PROJECT = "GET_ONE_PROJECT"
 export const BROWSE = "BROWSE"
 export const VOTE = "VOTE"
 export const VOTE_PROJECT = "VOTE_PROJECT"
+export const SAVE = "SAVE"
+export const GET_SAVED = "GET_SAVED"
+export const DELETE_SAVED = "DELETE_SAVED"
 

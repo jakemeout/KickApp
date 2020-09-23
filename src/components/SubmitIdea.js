@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { createProject } from "../redux/actions";
 import "../styles/SubmitIdea.css";
@@ -45,7 +45,7 @@ class SubmitIdea extends React.Component {
 
   render() {
     const { userInfo } = this.props
-    console.log(userInfo)
+  
     const { project } = this.state;
     const { isSubmitIdeaShowing } = this.props;
     return isSubmitIdeaShowing

@@ -1,14 +1,13 @@
 import Cookies from "js-cookie";
 import {
   CREATE_CURRENT_USER,
-  SIGNUP,
-  LOGIN,
   ERROR,
-  IS_LOGGED_IN,
   SUBMIT_PROJECT_IDEA,
   GET_ALL_PROJECTS,
   VOTE,
-  VOTE_PROJECT,
+  SAVE,
+  GET_SAVED,
+  DELETE_SAVED,
   BROWSE
 } from "../redux/actionTypes";
 
@@ -21,7 +20,6 @@ export function createUser(user) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
   return (dispatch) => {
-    dispatch({ type: SIGNUP });
     fetch("http://localhost:3001/api/v1/users", {
       method: "POST",
       headers: {
@@ -48,9 +46,7 @@ export const logInUser = (user) => {
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
-
   return (dispatch) => {
-    dispatch({ type: LOGIN });
     fetch("http://localhost:3001/api/v1/login", {
       method: "POST",
       headers: {
@@ -64,6 +60,7 @@ export const logInUser = (user) => {
         setCookie("jwt", user.jwt, 1);
         dispatch({ type: CREATE_CURRENT_USER, user });
       })
+      .then((user) => getSavedProjects(user))
       .catch((err) => {
         dispatch({ type: ERROR, err });
       });
@@ -143,7 +140,6 @@ export function getProjects() {
 export function patchAddVote(updatedProject) {
   const token = Cookies.get("jwt")
   return (dispatch) => {
-    dispatch({ type: VOTE_PROJECT });
     fetch(`http://localhost:3001/api/v1/projects/${updatedProject.id}`, {
       method: "PATCH",
       headers: {
@@ -163,3 +159,71 @@ export function patchAddVote(updatedProject) {
       });
   };
 }
+
+export function postSaveProject(project, user) {
+  const token = Cookies.get("jwt")
+  return (dispatch) => fetch(`http://localhost:3001/api/v1/save`, {
+      method: "POST",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ 
+        project_id: project.id,
+        user_id: user.id
+       })
+    })
+      .then((resp) => resp.json())
+      .then((project) => {
+        
+        dispatch({ type: SAVE, project });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+  };
+
+ export function getSavedProjects(user){
+  
+    const token = Cookies.get("jwt");
+    return (dispatch) => {
+        return fetch(`http://localhost:3001/api/v1/save/${user?.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((resp) => resp.json())
+          .then((savedProjects) => {
+            console.log("----", savedProjects)
+            dispatch({ type: GET_SAVED, savedProjects});
+          })
+          .catch((err) => {
+            dispatch({ type: ERROR, err });
+          });
+      }
+    };
+  
+  export function removeSavedProject(savedUserid) {
+    const token = Cookies.get("jwt")
+    return (dispatch) => fetch(`http://localhost:3001/api/v1/save/${savedUserid}`, {
+        method: "DELETE",
+        headers: {
+          accepts: "application/json",
+          "content-type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then((resp) => resp.json())
+        .then((savedProjects) => {
+          
+          dispatch({ type: DELETE_SAVED, savedProjects });
+        })
+        .catch((err) => {
+          dispatch({ type: ERROR, err });
+        });
+    };
+  

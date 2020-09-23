@@ -67,9 +67,9 @@
 .bookmark {
   position: absolute;
   width: 24px;
-  height: 27px;
-  left: 650px;
-  top: 0px;
+  height: 37px;
+  left: 652px;
+  bottom: 30px;
 }
 .sponsor-card {
   position: absolute;
@@ -80,11 +80,11 @@
 }
 .total-sponsored {
   position: absolute;
-  width: 121px;
-  left: 450px;
+  width: 300px;
+  left: 400px;
   bottom: 0px;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: 700;
+  font-size: 13px;
   line-height: 14px;
 }
 .thumbsdown {
@@ -165,4 +165,15 @@
 .submitted-on{
   font-size: 12px;
   text-align: center;
+}
+
+.claim-button{
+  position: absolute;
+  left: 270px;
+}
+
+.saved-container{
+  margin-top: 20%;
+  margin-left: 25%;
+  margin-right: 25%;
 }
