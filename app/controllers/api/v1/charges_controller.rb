@@ -7,19 +7,6 @@ class Api::V1::ChargesController < ApplicationController
         Stripe.api_key = 'sk_test_51HRjLwFVMZF5LB9VsVnI2sj1QSuuf3O1MjRD3RzxiB7W7OVMm6ejPwdRUxfXXlLlhuMXvrxBysZIfPCO1ZDKjHnX00YRKVn3ws'
 
         #fake it till you make it -  This is to update the project ammount after purchase.
-        project = Project.find(params[:projectId])
-        if project.sponsor_amount == nil
-            project_sponsor_amount = 0
-            new_amount = (project_sponsor_amount + (params[:chargeAmount] / 100))
-            project.update(sponsor_amount: new_amount)
-        else
-            project_sponsor_amount = project.sponsor_amount
-            new_amount = (project_sponsor_amount.to_i + (params[:chargeAmount] / 100))
-            project.update(sponsor_amount: new_amount)
-        end
-        
-        
-
         session = Stripe::Checkout::Session.create({
             payment_method_types: ['card'],
             line_items: [
@@ -35,11 +22,22 @@ class Api::V1::ChargesController < ApplicationController
             success_url: 'http://localhost:3000/browse',
             cancel_url: 'http://localhost:3000/cancel',
         })
-
         render json: { id: session.id }
-
+        
     end
     
+    def update_sponsor_amount
+        project = Project.find(params[:projectId])
+        if project.sponsor_amount == nil
+            project_sponsor_amount = 0
+            new_amount = (project_sponsor_amount + (params[:chargeAmount] / 100))
+            project.update(sponsor_amount: new_amount)
+        else
+            project_sponsor_amount = project.sponsor_amount
+            new_amount = (project_sponsor_amount.to_i + (params[:chargeAmount] / 100))
+            project.update(sponsor_amount: new_amount)
+        end
+    end
     
     # Stup 
     # def webhook 
