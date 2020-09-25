@@ -22,12 +22,33 @@ function renderItem(item) {
   return item.label;
 }
 
+function renderProjects() {
+  return (
+    <Link
+      to={"/projects"}
+    >
+      Projects
+    </Link>
+  );
+
+}
+
 function renderSavedIdeas() {
   return (
     <Link
       to={"/saved"}
     >
       Saved Ideas
+    </Link>
+  );
+}
+
+function renderClaimedIdeas() {
+  return (
+    <Link
+      to={"/claimed"}
+    >
+      Claimed Ideas
     </Link>
   );
 }
@@ -116,6 +137,12 @@ export const Navbar = ({ userInfo }) => {
     },
     {
       icon: UserIcon,
+      item: { label: "Claimed Ideas" },
+      mapItemToNode: renderClaimedIdeas,
+      mapItemToString: renderItem,
+    },
+    {
+      icon: UserIcon,
       item: { label: "Profile" },
       mapItemToNode: renderProfile,
       mapItemToString: renderItem,
@@ -145,6 +172,14 @@ export const Navbar = ({ userInfo }) => {
       navExitIcon: Delete,
       navPosition: { desktop: POSITION.horizontal },
     },
+    {
+      icon: Icon,
+      item: { label: "Projects" },
+      mapItemToNode: renderProjects,
+      mapItemToString: renderItem,
+      navExitIcon: Delete,
+      navPosition: { desktop: POSITION.horizontal },
+    }
   ];
 
 

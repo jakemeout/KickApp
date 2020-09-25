@@ -8,7 +8,9 @@ import { getProfileFetch } from "./redux/actions";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
 import BrowseContainer from "./components/BrowseContainer";
-import SavedProjects from "./components/SavedProjects";
+import SavedIdeasContainer from "./components/SavedIdeasContainer";
+import ClaimedIdeasContainer from "./components/ClaimedIdeasContainer"
+import Projects from "./components/Projects"
 import "./styles/App.css";
 import "./styles/Home.css";
 
@@ -28,7 +30,9 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route path="/browse" component={BrowseContainer} />
-              <Route path="/saved" component={SavedProjects} />
+              <Route path="/saved" component={SavedIdeasContainer} />
+              <Route path="/claimed" component={ClaimedIdeasContainer} />
+              <Route path="/projects" component={Projects} />
             </Switch>
           </BaseProvider>
         </StyletronProvider>

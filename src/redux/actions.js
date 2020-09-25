@@ -8,7 +8,11 @@ import {
   SAVE,
   GET_SAVED,
   DELETE_SAVED,
-  BROWSE,
+  CLAIM,
+  UNCLAIM,
+  GET_CLAIMED,
+  START_PROJECT,
+  GET_ALL_CLAIMED,
 } from "../redux/actionTypes";
 
 export function createUser(user) {
@@ -59,7 +63,6 @@ export const logInUser = (user) => {
         setCookie("jwt", user.jwt, 1);
         dispatch({ type: CREATE_CURRENT_USER, user });
       })
-      .then((user) => getSavedProjects(user))
       .catch((err) => {
         dispatch({ type: ERROR, err });
       });
@@ -92,7 +95,6 @@ export const getProfileFetch = () => {
 export function createProject(project) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    dispatch({ type: SUBMIT_PROJECT_IDEA });
     fetch("http://localhost:3001/api/v1/projects", {
       method: "POST",
       headers: {
@@ -103,8 +105,8 @@ export function createProject(project) {
       body: JSON.stringify({ project: project }),
     })
       .then((resp) => resp.json())
-      .then((project) => {
-        dispatch({ type: SUBMIT_PROJECT_IDEA, project });
+      .then(({ projects }) => {
+        dispatch({ type: SUBMIT_PROJECT_IDEA, projects });
       })
       .catch((err) => {
         dispatch({ type: ERROR, err });
@@ -115,7 +117,6 @@ export function createProject(project) {
 export function getProjects() {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    dispatch({ type: BROWSE });
     fetch("http://localhost:3001/api/v1/projects", {
       method: "GET",
       headers: {
@@ -125,7 +126,7 @@ export function getProjects() {
       },
     })
       .then((resp) => resp.json())
-      .then((projects) => {
+      .then(({ projects }) => {
         dispatch({ type: GET_ALL_PROJECTS, projects });
       })
       .catch((err) => {
@@ -195,9 +196,9 @@ export function getSavedProjects(user) {
       .then(({ savedProjects }) => {
         dispatch({ type: GET_SAVED, savedProjects });
       })
-    .catch((err) => {
-      dispatch({ type: ERROR, err });
-    });
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
   };
 }
 
@@ -215,6 +216,115 @@ export function removeSavedProject(savedUserid) {
       .then((resp) => resp.json())
       .then(({ savedProjects }) => {
         dispatch({ type: DELETE_SAVED, savedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+}
+
+export function postClaimedProject(project, user) {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/claim`, {
+      method: "POST",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        project_id: project.id,
+        user_id: user.id,
+      }),
+    })
+      .then((resp) => resp.json())
+      .then(({ claimedProjects }) => {
+        dispatch({ type: CLAIM, claimedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+}
+
+export function unClaimProject(claimedUserid) {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/claim/${claimedUserid}`, {
+      method: "DELETE",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then(({ claimedProjects }) => {
+        dispatch({ type: UNCLAIM, claimedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+}
+
+export function getClaimed(user) {
+  const token = Cookies.get("jwt");
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/api/v1/claimed/${user?.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then(({ claimedProjects }) => {
+        dispatch({ type: GET_CLAIMED, claimedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+  };
+}
+
+export function getAllClaimed() {
+  const token = Cookies.get("jwt");
+  return (dispatch) => {
+    return fetch(`http://localhost:3001/api/v1/claimed`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((resp) => resp.json())
+      .then(({ AllClaimedProjects }) => {
+        dispatch({ type: GET_ALL_CLAIMED, AllClaimedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+  };
+}
+
+export function postStartProject(project) {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/start_project`, {
+      method: "POST",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        project_id: project.id,
+      }),
+    })
+      .then((resp) => resp.json())
+      .then(({ claimedProjects }) => {
+        dispatch({ type: START_PROJECT, claimedProjects });
       })
       .catch((err) => {
         dispatch({ type: ERROR, err });

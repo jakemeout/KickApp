@@ -6,28 +6,24 @@ import { createProject } from "../redux/actions";
 import "../styles/SubmitIdea.css";
 
 class SubmitIdea extends React.Component {
-  
   state = {
-    
-    project: { 
+    project: {
       project_submitter_id: 0,
       project_name: "",
-      project_problem_statement:"",
-      project_idea_summary:""
-    }
-    
+      project_problem_statement: "",
+      project_idea_summary: "",
+    },
+  };
 
-  }
-  
   handleChange(event) {
-    const { userInfo } = this.props
-    const { name, value } = event.target
+    const { userInfo } = this.props;
+    const { name, value } = event.target;
     const { project } = this.state;
     this.setState({
       project: {
         ...project,
         [name]: value,
-        project_submitter_id: userInfo.user.id
+        project_submitter_id: userInfo.user.id,
       },
     });
   }
@@ -44,8 +40,8 @@ class SubmitIdea extends React.Component {
   };
 
   render() {
-    const { userInfo } = this.props
-  
+    const { userInfo } = this.props;
+
     const { project } = this.state;
     const { isSubmitIdeaShowing } = this.props;
     return isSubmitIdeaShowing
@@ -61,7 +57,7 @@ class SubmitIdea extends React.Component {
             >
               <div className="modal">
                 <div className="modal-header">
-                <h3>Hi {`${userInfo.user.first_name}`}</h3>
+                  <h3>Hi {`${userInfo.user.first_name}`}</h3>
                   <button
                     type="button"
                     className="modal-close-button"
@@ -91,7 +87,6 @@ class SubmitIdea extends React.Component {
                       <b>Problem Statement:</b>
                     </label>
                     <textarea
-                      
                       placeholder="Enter a problem statement"
                       name="project_problem_statement"
                       required
@@ -105,7 +100,6 @@ class SubmitIdea extends React.Component {
                       <b>Idea Summary</b>
                     </label>
                     <textarea
-                    
                       placeholder="Summary of your Idea"
                       name="project_idea_summary"
                       //not required
@@ -139,34 +133,3 @@ const msp = (state) => {
 };
 
 export default connect(msp, mdp)(SubmitIdea);
-// <section>
-//   <h2>Add a New Post</h2>
-//   <form>
-//     <label htmlFor="postTitle">Post Title:</label>
-//     <input
-//       type="text"
-//       id="postTitle"
-//       name="postTitle"
-//       placeholder="What's on your mind?"
-//       value={title}
-//       onChange={onTitleChanged}
-//     />
-//     <label htmlFor="postAuthor">Author:</label>
-//     <select id="postAuthor" value={userId} onChange={onAuthorChanged}>
-//       <option value=""></option>
-//       {usersOptions}
-//     </select>
-//     <label htmlFor="postContent">Content:</label>
-//     <textarea
-//       id="postContent"
-//       name="postContent"
-//       value={content}
-//       onChange={onContentChanged}
-//     />
-//     <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
-//       Save Post
-//     </button>
-//   </form>
-// </section>
-
-

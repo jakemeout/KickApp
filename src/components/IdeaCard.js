@@ -4,6 +4,8 @@ import Moment from "moment";
 import { patchAddVote } from "../redux/actions";
 import { postSaveProject } from "../redux/actions";
 import { removeSavedProject } from "../redux/actions";
+import { postClaimedProject } from "../redux/actions";
+import { unClaimProject } from "../redux/actions";
 import Stripe from "./Stripe";
 
 class IdeaCard extends React.Component {
@@ -21,10 +23,69 @@ class IdeaCard extends React.Component {
     );
   }
 
+  isClaimedByAnotherDev(isClaimedByDev) {
+    const { userInfo } = this.props;
+    const { project } = this.props;
+    if (userInfo.user.is_developer) {
+      if (
+        project?.is_claimed &&
+        project?.project_developer_id !== userInfo?.user?.id
+      ) {
+        return (
+          <div className="claimed-div">
+            {`Claimed by ${project?.project_developer?.username}`} -> <a href={`mailto:${project?.project_developer.email}`}>Contact dev</a>
+          </div>
+        );
+      } else {
+        return (
+          <div className="claim-div">
+            <button
+              className="claim-button"
+              onClick={() => this.handleClaim(!isClaimedByDev)}
+            >
+              {isClaimedByDev ? "Unclaim" : "Claim"}
+            </button>
+          </div>
+        );
+      }
+    } else if (
+      project?.is_claimed &&
+      project?.project_developer_id !== userInfo?.user?.id
+    )
+      return (
+        <div className="claimed-div">
+          {`Claimed by dev ${project?.project_developer?.username}`}
+        </div>
+      );
+  }
+
+  isClaimedByDev() {
+    const { project, projectInfo } = this.props;
+    return (projectInfo.claimedProjects || []).find(
+      (a) => a.project_id === project.id
+    );
+  }
+
   getFormattedDate = (date) => {
     Moment.locale("en");
     var dt = date;
     return Moment(dt).format("LLLL");
+  };
+
+  handleClaim = (clicked) => {
+    const {
+      userInfo,
+      project,
+      postClaimedProject,
+      unClaimProject,
+    } = this.props;
+    if (clicked) {
+      postClaimedProject(project, userInfo.user);
+    } else {
+      let claimedProject = this.isClaimedByDev();
+      let claimedUserid = claimedProject.id;
+      unClaimProject(claimedUserid);
+    }
   };
 
   handleSave = (clicked) => {
@@ -74,13 +135,14 @@ class IdeaCard extends React.Component {
   render() {
     const { project, userInfo } = this.props;
     const isSavedClick = this.isSavedByUser();
-
+    const isClaimedByDev = this.isClaimedByDev();
+    console.log("stuff", project, isClaimedByDev);
     return (
       <React.Fragment>
         <div className="card">
           <div className="card-author">
             <div className="ellipses"></div>
-            <div className="submitter-name">{`${project.project_submitter.first_name} ${project.project_submitter.last_name}`}</div>
+            <div className="submitter-name">{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</div>
             <div className="total-sponsored">
               Total Sponsored: {project?.sponsor_amount}
             </div>
@@ -106,13 +168,7 @@ class IdeaCard extends React.Component {
                 style={{ cursor: "pointer" }}
               />
             </div>
-            {userInfo.user.is_developer && (
-              <div className="claim-div">
-                <button className="claim-button" onClick={null}>
-                  Claim
-                </button>
-              </div>
-            )}
+            {this.isClaimedByAnotherDev(isClaimedByDev)}
           </div>
 
           <div className="tags-votes">
@@ -166,6 +222,7 @@ function msp(state) {
   return {
     userInfo: state.userInfo,
     projectInfo: state.projectInfo,
+    AllClaimedProjects: state.AllClaimedProjects,
   };
 }
 const mdp = (dispatch) => {
@@ -175,7 +232,25 @@ const mdp = (dispatch) => {
       dispatch(postSaveProject(project, user)),
     removeSavedProject: (savedUserid) =>
       dispatch(removeSavedProject(savedUserid)),
+    postClaimedProject: (project, user) =>
+      dispatch(postClaimedProject(project, user)),
+    unClaimProject: (claimedUserid) => dispatch(unClaimProject(claimedUserid)),
   };
 };
 
 export default connect(msp, mdp)(IdeaCard);
+
+// {userInfo.user.is_developer ? (
+//   <div className="claim-div">
+//     <button
+//       className="claim-button"
+//       onClick={() => this.handleClaim(!isClaimedByDev)}
+//     >
+//       {isClaimedByDev ? "Unclaim" :  "Claim" }
+//     </button>
+//   </div>
+// ) : (
+//   <div className="claim-div">
+//   {isClaimedByDev ? `Claimed by {}`}
+//   </div>
+// )}

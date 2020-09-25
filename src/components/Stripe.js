@@ -62,7 +62,7 @@ export default function Stripe(props) {
   const handleClick = async (event) => {
     // needs validation for no amount
     const chargeAmount = parseInt(event) * 100
-    const userId = props.user.user.id
+    const userId = props.user.id
     const projectId = props.project.id
     const token = Cookies.get("jwt");
     const stripe = await stripePromise;
