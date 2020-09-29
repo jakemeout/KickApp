@@ -1,12 +1,12 @@
 import React, { useState} from "react"; 
-// import React, { useEffect} from "react";  
 import ReactDOM from "react-dom";
 import Cookies from "js-cookie";
+import {useEffect, setMessage} from "react"
 import { loadStripe } from "@stripe/stripe-js";
 import "../styles/Stripe.css";
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
+
 const stripePromise = loadStripe(
+  //testing key
   "pk_test_51HRjLwFVMZF5LB9VNvATyd16ffbxIT8guyDocDaI2FDbkOKzKSoY0erbTsZJODy0qnFl1lQTIEos6IJF9Bus6DWi00qChjPiVA"
 );
 
@@ -45,25 +45,26 @@ const ProductDisplay = ({ handleClick }) => {
 // );
 
 export default function Stripe(props) {
-//   // const [message, setMessage] = useState("");
-//   useEffect(() => {
-//     // Check to see if this is a redirect back from Checkout
-//     const query = new URLSearchParams(window.location.search);
-//     if (query.get("success")) {
-//       setMessage("Order placed! You will receive an email confirmation.");
-//     }
-//     if (query.get("canceled")) {
-//       setMessage(
-//         "Order canceled -- continue to shop around and checkout when you're ready."
-//       );
-//     }
-//   }, []);
+  // const [message, setMessage] = useState("");
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      
+    }
+    if (query.get("canceled")) {
+      setMessage(
+        "Order canceled -- continue to shop around and checkout when you're ready."
+      );
+    }
+  }, []);
 
   const handleClick = async (event) => {
     // needs validation for no amount
+    // if (event.length <= 0) 
     const chargeAmount = parseInt(event) * 100
-    const userId = props.user.id
-    const projectId = props.project.id
+    const user_id = props.user.id
+    const project_id = props.project.id
     const token = Cookies.get("jwt");
     const stripe = await stripePromise;
     const response = await fetch("http://localhost:3001/api/v1/charges", {
@@ -73,7 +74,7 @@ export default function Stripe(props) {
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({chargeAmount,userId, projectId})
+      body: JSON.stringify({chargeAmount,user_id, project_id})
     });
     const session = await response.json();
     

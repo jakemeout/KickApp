@@ -145,26 +145,6 @@ class Signup extends React.Component {
                 value={user.website}
               />
             </FormControl>
-            <FormControl label="Other link">
-              <Input
-                type="website"
-                placeholder="https://yoursite.com"
-                name="website"
-                //not required
-                onChange={(e) => this.handleChange(e)}
-                value={user.website}
-              />
-            </FormControl>
-            <FormControl label="Website link">
-              <Input
-                type="other_links"
-                placeholder="https://yoursite.com"
-                name="other_links"
-                //not required
-                onChange={(e) => this.handleChange(e)}
-                value={user.other_links}
-              />
-            </FormControl>
             <Checkbox
               checked={user.is_developer}
               labelPlacement={LABEL_PLACEMENT.right}
@@ -177,7 +157,7 @@ class Signup extends React.Component {
           </ModalBody>
           <ModalFooter>
             <ModalButton type="submit" onClick={(e) => this.handleSubmit(e)}>
-              Log In
+              Sign Up
             </ModalButton>
           </ModalFooter>
         </form>

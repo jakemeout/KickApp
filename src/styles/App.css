@@ -68,24 +68,24 @@
 .bookmark {
   position: absolute;
   width: 24px;
-  height: 37px;
-  left: 652px;
+  height: 40px;
+  left: 650px;
   bottom: 30px;
 }
 .sponsor-card {
   position: absolute;
-  width: 24px;
-  height: 27px;
-  left: 580px;
-  bottom: 0px;
+  width: 40px;
+  height: 40px;
+  left: 585px;
+  bottom: 30px;
 }
 .total-sponsored {
   position: absolute;
   width: 300px;
-  left: 400px;
+  left: 460px;
   bottom: 0px;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 14px;
 }
 .thumbsdown {
@@ -118,7 +118,7 @@
   left: 20px;
   top: 15px;
   border-radius: 80%;
-
+  box-shadow: -1px 4px 10px 0px rgba(68, 68, 68, 0.4);
   background: #6ec29b;
 }
 
@@ -141,19 +141,33 @@
   bottom: 75px;
 }
 
-.tags-votes > .num-upvote {
+.upvote {
   position: absolute;
   width: 29px;
   height: 24px;
-  left: 580px;
-  top: 10px;
+  left: 520px;
+  top:12px;
 }
-.tags-votes > .num-downvote {
+.downvote {
   position: absolute;
   width: 29px;
   height: 24px;
-  left: 625px;
+  left: 595px;
   top: 14px;
+}
+.up-vote-num {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 565px;
+  top: 25px;
+}
+.down-vote-num {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 645px;
+  top: 25px;
 }
 .card-details {
   position: absolute;
@@ -267,8 +281,6 @@ hr {
   left: 230px;
 }
 
-
-
 .tooltip {
   position: absolute;
   z-index: 10;
@@ -277,10 +289,10 @@ hr {
   margin-left: -60px;
 }
 
-.claimed-ideas-mini-cards{
+.claimed-ideas-mini-cards {
   display: flex;
   flex-direction: column;
-  padding: 0px 20px;
+  padding: 24px;
 
   position: relative;
   width: 400px;
@@ -291,10 +303,8 @@ hr {
   border-radius: 10px;
   overflow-y: scroll;
   margin: 2%;
-
 }
 
-.contact-submitter{
+.contact-submitter {
   text-align: center;
 }
-

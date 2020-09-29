@@ -11,7 +11,8 @@ import {
   START_PROJECT,
   COMPLETE_PROJECT,
   ABANDON_PROJECT,
-  SAVE
+  SAVE,
+  VOTE
 } from "../actionTypes";
 const initialState = {
   project: {},
@@ -60,6 +61,11 @@ const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         claimedProjects: action.claimedProjects,
+      };
+      case VOTE:
+      return {
+        ...state,
+        projects: action.projects,
       };
     case GET_CLAIMED:
       return {

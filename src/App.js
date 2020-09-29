@@ -11,6 +11,7 @@ import BrowseContainer from "./components/BrowseContainer";
 import SavedIdeasContainer from "./components/SavedIdeasContainer";
 import ClaimedIdeasContainer from "./components/ClaimedIdeasContainer"
 import Projects from "./components/Projects"
+import Success from "./components/Success"
 import "./styles/App.css";
 import "./styles/Home.css";
 
@@ -33,6 +34,7 @@ class App extends React.Component {
               <Route path="/saved" component={SavedIdeasContainer} />
               <Route path="/claimed" component={ClaimedIdeasContainer} />
               <Route path="/projects" component={Projects} />
+              <Route path="/success" component={Success} />
             </Switch>
           </BaseProvider>
         </StyletronProvider>

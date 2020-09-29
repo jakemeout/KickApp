@@ -14,7 +14,7 @@ import {
   START_PROJECT,
   COMPLETE_PROJECT,
   GET_ALL_CLAIMED,
-  ABANDON_PROJECT
+  ABANDON_PROJECT,
 } from "../redux/actionTypes";
 
 export function createUser(user) {
@@ -94,17 +94,17 @@ export const getProfileFetch = () => {
   };
 };
 
-export function createProject(project, tag) {
+export function createProject(project, tags) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    fetch("http://localhost:3001/api/v1/projects", { 
+    fetch("http://localhost:3001/api/v1/projects", {
       method: "POST",
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ project: project, tag: tag }),
+      body: JSON.stringify({ project, tags }),
     })
       .then((resp) => resp.json())
       .then(({ projects }) => {
@@ -137,21 +137,25 @@ export function getProjects() {
   };
 }
 
-export function patchAddVote(updatedProject) {
+export function postAddVote(project, user, vote_action) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    fetch(`http://localhost:3001/api/v1/projects/${updatedProject.id}`, {
-      method: "PATCH",
+    fetch(`http://localhost:3001/api/v1//votes`, {
+      method: "POST",
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ project: updatedProject }),
+      body: JSON.stringify({ 
+        project_id: project.id,
+        user_id: user.id, 
+        vote_action: vote_action
+      })
     })
       .then((resp) => resp.json())
-      .then((project) => {
-        dispatch({ type: VOTE, project });
+      .then(({projects}) => {
+        dispatch({ type: VOTE, projects });
       })
       .catch((err) => {
         dispatch({ type: ERROR, err });
@@ -378,4 +382,3 @@ export function postAbandonProject(project) {
         dispatch({ type: ERROR, err });
       });
 }
-

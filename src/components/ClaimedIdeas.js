@@ -1,10 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
-import { postStartProject } from "../redux/actions";
+import { styled } from "baseui";
 import { StatefulCalendar } from "baseui/datepicker";
+import { Button } from "baseui/button";
+
+import { postStartProject } from "../redux/actions";
 import { postCompleteProject } from "../redux/actions";
 import { postAbandonProject } from "../redux/actions";
 
+const Label = styled("div", ({ $theme }) => ({
+  ...$theme.typography.LabelMedium,
+}));
+
+const DataContainer = styled("div", ({ $theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+}));
+
+const STEPS = ["Start", "In progress", "Completed", "Abandoned"];
 class ClaimedIdeas extends React.Component {
   state = {
     hover: false,
@@ -12,6 +25,26 @@ class ClaimedIdeas extends React.Component {
 
   setHover = (val) => {
     this.setState({ hover: val });
+  };
+
+  getNextStep = () => {
+    const { project = {} } = this.props.project;
+
+    let stepStage = 0;
+    if (project.completed === true) {
+      stepStage = 2;
+    } else if (project.in_progress === true) {
+      stepStage = 1;
+    }
+    return stepStage;
+  };
+
+  handleNextStep = (step) => {
+    if (step === 0) {
+      this.handleStartProject();
+    } else if (step === 1) {
+      this.handleCompleteProject();
+    }
   };
 
   handleStartProject = () => {
@@ -32,53 +65,50 @@ class ClaimedIdeas extends React.Component {
   };
 
   render() {
-    const { project } = this.props.project;
+    const { project = {} } = this.props.project;
+    const nextStep = this.getNextStep();
 
     return (
       <React.Fragment>
         <div className="claimed-ideas-mini-cards">
-          <h5>
-            Submitter:{" "}
-            {`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}{" "}
-          </h5>
-          <h5>Idea name: {project?.project_name}</h5>
-          <h5>Idea Summary: {project?.project_idea_summary}</h5>
-          <br />
+          <DataContainer>
+            <Label>Submitter</Label>
+            <span>{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</span>
+          </DataContainer>
 
-          {!project?.project_started ? (
-            <button
-              onMouseEnter={() => this.setHover(true)}
-              onMouseLeave={() => this.setHover(false)}
-              onClick={() => this.handleStartProject()}
-            >
-              Start Project
-            </button>
-          ) : (
-            "Project started"
+          <DataContainer>
+            <Label>Idea name</Label>
+            <span>{project?.project_name}</span>
+          </DataContainer>
+
+          <DataContainer>
+            <Label>Idea summary</Label>
+            <span>{project?.project_idea_summary}</span>
+          </DataContainer>
+
+          {!project.completed && !project.abandoned && (
+            <DataContainer>
+              <Button onClick={() => this.handleNextStep(nextStep)}>
+                {STEPS[nextStep]} Project
+              </Button>
+              <Button onClick={() => this.handleAbandonProject()}>
+                Abandon Project
+              </Button>
+            </DataContainer>
           )}
-          {this.state.hover && (
-            <div className="tooltip">
-              Warning, you cannot UNDO starting your project. Please Commit!
-            </div>
+
+          {project.completed && (
+            <DataContainer>
+              <Label>Completed on</Label>
+              <span>{project?.completion_date}</span>
+            </DataContainer>
           )}
-          <br />
-          <button onClick={() => this.handleSetEndDate}>
-            Choose an end date
-          </button>
-          {!project?.completed ? (
-            <button onClick={() => this.handleCompleteProject()}>
-              Complete Project
-            </button>
-          ) : (
-            `Project Completed on ${project?.completion_date}`
-          )}
-          <br />
-          {!project?.abandoned ? (
-            <button onClick={() => this.handleAbandonProject()}>
-              Abandon Project
-            </button>
-          ) : (
-            `Abandoned on ${project?.abandoned_date}`
+
+          {project.abandoned && (
+            <DataContainer>
+              <Label>Abandoned on</Label>
+              <span>{project?.abandoned_date}</span>
+            </DataContainer>
           )}
 
           <h5>

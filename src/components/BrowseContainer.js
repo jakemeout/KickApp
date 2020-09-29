@@ -9,11 +9,13 @@ import { Search } from "baseui/icon";
 import { Input } from "baseui/input";
 
 
+
+
 class BrowseContainer extends React.Component {
   state = {
     searchTerm: "",
   };
-
+  
   componentWillMount() {
     this.props.getProjects();
     this.props.getAllClaimed();
@@ -29,7 +31,7 @@ class BrowseContainer extends React.Component {
       this.props.getAllClaimed();
     }
   }
-
+  
   renderIdeas = () => {
     const { projects } = this.props.projectInfo;
     const { searchTerm } = this.state;
@@ -56,7 +58,7 @@ class BrowseContainer extends React.Component {
               endEnhancer={<Search size="18px" />}
               placeholder="Search by name or tag"
               onChange={
-                (e) => this.setState({ searchTerm: e.target.value })
+                (e) => this.setState({ searchTerm: e.target.value.toLowerCase() })
               }
             />
           </div>

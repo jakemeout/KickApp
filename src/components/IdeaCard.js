@@ -1,18 +1,26 @@
 import React from "react";
 import { connect } from "react-redux";
 import Moment from "moment";
-import { patchAddVote } from "../redux/actions";
+import { postAddVote } from "../redux/actions";
 import { postSaveProject } from "../redux/actions";
 import { removeSavedProject } from "../redux/actions";
 import { postClaimedProject } from "../redux/actions";
 import { unClaimProject } from "../redux/actions";
-import {Tag} from 'baseui/tag';
+import { Tag } from "baseui/tag";
+import { styled } from "baseui";
+import { Button } from "baseui/button";
 import Stripe from "./Stripe";
+
+const DataContainer = styled("div", ({ $theme }) => ({
+  display: "flex",
+  justifyContent: "space-between",
+}));
+const Label = styled("div", ({ $theme }) => ({
+  ...$theme.typography.LabelMedium,
+}));
 
 class IdeaCard extends React.Component {
   state = {
-    upVoteClicked: false,
-    downVoteClicked: false,
     project: this.props.project || 0,
     isStripeShowing: false,
   };
@@ -34,7 +42,15 @@ class IdeaCard extends React.Component {
       ) {
         return (
           <div className="claimed-div">
-            {`Claimed by ${project?.project_developer?.username}`} -> <a href={`mailto:${project?.project_developer?.email}`}>Contact dev</a>
+            <DataContainer>
+              <Label>Idea summary</Label>
+              <span>
+                {`Claimed by ${project?.project_developer?.username}`} ->
+                <a href={`mailto:${project?.project_developer?.email}`}>
+                  Contact dev
+                </a>
+              </span>
+            </DataContainer>
           </div>
         );
       } else {
@@ -65,15 +81,6 @@ class IdeaCard extends React.Component {
     return (projectInfo.claimedProjects || []).find(
       (a) => a.project_id === project.id
     );
-  }
-
-  getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
   }
 
   getFormattedDate = (date) => {
@@ -113,49 +120,53 @@ class IdeaCard extends React.Component {
       removeSavedProject(savedUserid);
     }
   };
-
+  renderTags = () => {
+    const { project } = this.props;
+    if (project?.tags?.length > 0) {
+      return project?.tags?.map((tag) => (
+        <Tag closeable={false} kind="primary">
+          {" "}
+          {tag?.tag_name}{" "}
+        </Tag>
+      ));
+    } else {
+      return null;
+    }
+  };
   handleSponsor = () => {
     this.setState({ isStripeShowing: !this.state.isStripeShowing });
   };
 
-  handleVote = (isThumbUp = true) => {
-    const { upVoteClicked, downVoteClicked, project } = this.state;
+  handleVote = (isUpVote = true) => {
+    const { userInfo, project, postAddVote } = this.props;
+    const currentVote = project?.user_votes?.vote_action;
 
-    let updatedUpVote = isThumbUp ? !upVoteClicked : upVoteClicked;
-    let num_up_votes = project.num_up_votes;
-    let updatedDownVote = isThumbUp ? downVoteClicked : !downVoteClicked;
-    let num_down_votes = project.num_down_votes;
-
-    if (isThumbUp) {
-      num_up_votes = (project.num_up_votes || 0) + (updatedUpVote ? 1 : -1);
+    let updateVote;
+    if (currentVote === 1) {
+      updateVote = isUpVote ? 0 : -1;
+    } else if (currentVote === -1) {
+      updateVote = isUpVote ? 1 : 0;
     } else {
-      num_down_votes =
-        (project.num_down_votes || 0) + (updatedDownVote ? 1 : -1);
+      updateVote = isUpVote ? 1 : -1;
     }
-
-    const updatedProject = { ...project, num_down_votes, num_up_votes };
-    this.props.patchAddVote(updatedProject);
-    this.setState({
-      downvoteClicked: updatedDownVote,
-      upVoteClicked: updatedUpVote,
-      project: updatedProject,
-    });
+    postAddVote(project, userInfo.user, updateVote);
   };
-  
+
   render() {
-    
     const { project, userInfo } = this.props;
     const isSavedClick = this.isSavedByUser();
     const isClaimedByDev = this.isClaimedByDev();
-
+    console.log(project?.user_votes?.[0]?.vote_action);
     return (
-      <React.Fragment >
+      <React.Fragment>
         <div className="card">
           <div className="card-author">
-            <div className="ellipses" style={{background: `${this.getRandomColor()}`}}></div>
+            <div className="ellipses" style={{ background: "#000" }}></div>
             <div className="submitter-name">{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</div>
             <div className="total-sponsored">
-              Total Sponsored: {project?.sponsor_amount}
+              {`Total Sponsored: $${
+                project?.sponsor_amount ? project?.sponsor_amount : 0
+              }`}
             </div>
             <div className="bookark-div">
               <img
@@ -181,31 +192,33 @@ class IdeaCard extends React.Component {
             </div>
             {this.isClaimedByAnotherDev(isClaimedByDev)}
           </div>
-         
-          <div className="tags-votes">
-          <div className="tag">
-          
-       {project?.tags[0]?.tag_name ? <Tag closeable={false} kind="primary">
-          {project?.tags[0]?.tag_name} 
-        </Tag> : null }
-          </div>
 
-            <div className="num-upvote">
-              {this.state.project.num_up_votes}
+          <div className="tags-votes">
+            <div className="tag">{this.renderTags()}</div>
+            <div className="up-vote-num">{project?.num_up_votes}</div>
+            <div className="down-vote-num">{project?.num_down_votes}</div>
+            <div className="upvote">
               <img
                 alt="thumbsup"
                 className="thumbsup"
-                src={require("./thumbsUp.png")}
+                src={
+                  project?.user_votes?.[0]?.vote_action === 1
+                    ? require("./black_thumb_up.png")
+                    : require("./thumbsUp.png")
+                }
                 onClick={() => this.handleVote(true)}
                 style={{ cursor: "pointer" }}
               />
             </div>
-            <div className="num-downvote">
-              {this.state.project.num_down_votes}
+            <div className="downvote">
               <img
                 alt="thumbsdown"
                 className="thumbsdown"
-                src={require("./thumbsDown.png")}
+                src={
+                  project?.user_votes?.[0]?.vote_action === -1
+                    ? require("./black_thumb_down.png")
+                    : require("./thumbsDown.png")
+                }
                 onClick={() => this.handleVote(false)}
                 style={{ cursor: "pointer" }}
               />
@@ -245,7 +258,8 @@ function msp(state) {
 }
 const mdp = (dispatch) => {
   return {
-    patchAddVote: (project) => dispatch(patchAddVote(project)),
+    postAddVote: (project, user, vote_action) =>
+      dispatch(postAddVote(project, user, vote_action)),
     postSaveProject: (project, user) =>
       dispatch(postSaveProject(project, user)),
     removeSavedProject: (savedUserid) =>
@@ -257,18 +271,3 @@ const mdp = (dispatch) => {
 };
 
 export default connect(msp, mdp)(IdeaCard);
-
-// {userInfo.user.is_developer ? (
-//   <div className="claim-div">
-//     <button
-//       className="claim-button"
-//       onClick={() => this.handleClaim(!isClaimedByDev)}
-//     >
-//       {isClaimedByDev ? "Unclaim" :  "Claim" }
-//     </button>
-//   </div>
-// ) : (
-//   <div className="claim-div">
-//   {isClaimedByDev ? `Claimed by {}`}
-//   </div>
-// )}
