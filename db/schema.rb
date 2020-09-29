@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_25_132650) do
+ActiveRecord::Schema.define(version: 2020_09_28_155919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,11 @@ ActiveRecord::Schema.define(version: 2020_09_25_132650) do
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "project_tags", force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -51,6 +56,11 @@ ActiveRecord::Schema.define(version: 2020_09_25_132650) do
     t.string "sponsor_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "completion_date"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "tag_name"
   end
 
   create_table "user_saved_projects", force: :cascade do |t|

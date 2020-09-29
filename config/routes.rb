@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: [:create]
       resources :charges
+      post '/abandon_project', to: 'projects#abandon_project'
+      post '/complete_project', to: 'projects#complete_project'
       post '/start_project', to: 'projects#start_project'
       get '/claimed', to: 'user_saved_projects#all_claimed'
       get '/claimed/:id', to: 'user_saved_projects#claimed'
