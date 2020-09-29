@@ -1,20 +1,30 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { connect } from "react-redux";
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE,
+  ROLE,
+} from "baseui/modal";
+import { Input } from "baseui/input";
+import { FormControl } from "baseui/form-control";
+
 import { logInUser } from "../redux/actions";
 import "../styles/Login.css";
 
 class Login extends React.Component {
-
   state = {
-    user:{ 
+    user: {
       username: "",
-    password: ""
-    }
-  }
+      password: "",
+    },
+  };
 
   handleChange(event) {
-    const { name, value } = event.target
+    const { name, value } = event.target;
     const { user } = this.state;
     this.setState({
       user: {
@@ -26,79 +36,59 @@ class Login extends React.Component {
 
   handleSubmit = (event) => {
     const { user } = this.state;
-    event.preventDefault()
-    this.props.postCallUser(user)
-    this.closeModal()
-  }
-  
+    const { postCallUser, hide } = this.props;
+    event.preventDefault();
+    postCallUser(user);
+    hide();
+  };
+
   closeModal = () => {
-    return this.props.hide
-  }
+    return this.props.hide;
+  };
 
   render() {
     const { user } = this.state;
-    const { isLoginShowing } = this.props;
-    return isLoginShowing
-      ? ReactDOM.createPortal(
-          <React.Fragment>
-            <div className="modal-overlay" />
-            <div
-              className="modal-wrapper"
-              aria-modal
-              aria-hidden
-              tabIndex={-1}
-              role="dialog"
-            >
-              <div className="modal">
-                <div className="modal-header">
-                  <button
-                    type="button"
-                    className="modal-close-button"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                    onClick={this.props.hide}
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="login-form">
-                  <form onSubmit={this.handleSubmit}>
-                  <label>
-                      <b>Username</b>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter Username"
-                      name="username"
-                      required
-                      onChange={(e) => this.handleChange(e)}
-                      value={user.username}
-                    />
-                    <br></br>
+    const { isLoginShowing, hide } = this.props;
 
-                    <label>
-                      <b>Password</b>
-                    </label>
-                    <input
-                      type="password"
-                      placeholder="Enter Password"
-                      name="password"
-                      required
-                      onChange={(e) => this.handleChange(e)}
-                      value={user.password}
-                    />
-                    <br></br>
-                    <button type="submit" className="sign-up-btn" >
-                      Log In
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </React.Fragment>,
-          document.body
-        )
-      : null;
+    return (
+      <Modal
+        onClose={hide}
+        closeable
+        isOpen={isLoginShowing}
+        animate
+        autoFocus
+        size={SIZE.default}
+        role={ROLE.dialog}
+      >
+        <form onSubmit={(e) => this.handleSubmit(e)}>
+          <ModalHeader>Log In</ModalHeader>
+          <ModalBody>
+            <FormControl label="Username">
+              <Input
+                placeholder="Enter Username"
+                onChange={(e) => this.handleChange(e)}
+                name="username"
+                value={user.username}
+              />
+            </FormControl>
+            <FormControl label="Password">
+              <Input
+                placeholder="Enter Password"
+                onChange={(e) => this.handleChange(e)}
+                name="password"
+                type="password"
+                value={user.password}
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <ModalButton type="submit" onClick={(e) => this.handleSubmit(e)}>
+              Log In
+            </ModalButton>
+          </ModalFooter>
+        </form>
+      </Modal>
+    );
   }
 }
 const mdp = (dispatch) => {
