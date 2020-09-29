@@ -13,25 +13,28 @@ class SubmitIdea extends React.Component {
       project_problem_statement: "",
       project_idea_summary: "",
     },
+    tag: "",
   };
 
   handleChange(event) {
     const { userInfo } = this.props;
     const { name, value } = event.target;
-    const { project } = this.state;
+    const { project, tag } = this.state;
     this.setState({
       project: {
         ...project,
         [name]: value,
         project_submitter_id: userInfo.user.id,
       },
+      [name]: value
     });
   }
 
   handleSubmit = (event) => {
     const { project } = this.state;
+    const {tag} = this.state
     event.preventDefault();
-    this.props.postSubmitIdea(project);
+    this.props.postSubmitIdea(project, tag);
     this.closeModal();
   };
 
@@ -42,7 +45,7 @@ class SubmitIdea extends React.Component {
   render() {
     const { userInfo } = this.props;
 
-    const { project } = this.state;
+    const { project,tag } = this.state;
     const { isSubmitIdeaShowing } = this.props;
     return isSubmitIdeaShowing
       ? ReactDOM.createPortal(
@@ -106,6 +109,16 @@ class SubmitIdea extends React.Component {
                       onChange={(e) => this.handleChange(e)}
                       value={project.project_idea_summary}
                     />
+                     <label>
+                      <b>#</b>
+                    </label>
+                    <input
+                      placeholder="Tag it!"
+                      name="tag"
+                      //not required
+                      onChange={(e) => this.handleChange(e)}
+                      value={tag}
+                    />
                     <br></br>
                     <button type="submit" className="submit-idea-btn">
                       Submit Idea
@@ -122,7 +135,7 @@ class SubmitIdea extends React.Component {
 }
 
 const mdp = (dispatch) => {
-  return { postSubmitIdea: (project) => dispatch(createProject(project)) };
+  return { postSubmitIdea: (project, tag) => dispatch(createProject(project, tag)) };
 };
 
 const msp = (state) => {

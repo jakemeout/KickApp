@@ -10,25 +10,34 @@ class SavedIdeasContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.userInfo.user.id !== prevProps.userInfo.user.id) {
+    if (
+      this.props.userInfo.user.id !== prevProps.userInfo.user.id ||
+      this.props.projectInfo.projects !== prevProps.projectInfo.projects
+    ) {
       this.props.getSavedProjects(this.props.userInfo.user);
     }
   }
 
   renderSavedIdeas = () => {
     const { savedProjects } = this.props.projectInfo;
-    
 
-    return savedProjects.map((project) => <SavedIdeas key={project.id} project={project} />);
+    return savedProjects.map((project) => (
+      <SavedIdeas key={project.id} project={project} />
+    ));
   };
   render() {
     return (
       <React.Fragment>
         <h1 className="saved-idea-header">Saved Ideas</h1>
-        <hr style={{width: '60%', margin: "auto", marginTop: "5%", marginBottom: "5%"}}/>
-        <div className="saved-idea-container">
-        {this.renderSavedIdeas()}
-        </div>
+        <hr
+          style={{
+            width: "60%",
+            margin: "auto",
+            marginTop: "5%",
+            marginBottom: "5%",
+          }}
+        />
+        <div className="saved-idea-container">{this.renderSavedIdeas()}</div>
       </React.Fragment>
     );
   }

@@ -12,7 +12,9 @@ import {
   UNCLAIM,
   GET_CLAIMED,
   START_PROJECT,
+  COMPLETE_PROJECT,
   GET_ALL_CLAIMED,
+  ABANDON_PROJECT
 } from "../redux/actionTypes";
 
 export function createUser(user) {
@@ -92,17 +94,17 @@ export const getProfileFetch = () => {
   };
 };
 
-export function createProject(project) {
+export function createProject(project, tag) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    fetch("http://localhost:3001/api/v1/projects", {
+    fetch("http://localhost:3001/api/v1/projects", { 
       method: "POST",
       headers: {
         accepts: "application/json",
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ project: project }),
+      body: JSON.stringify({ project: project, tag: tag }),
     })
       .then((resp) => resp.json())
       .then(({ projects }) => {
@@ -330,3 +332,50 @@ export function postStartProject(project) {
         dispatch({ type: ERROR, err });
       });
 }
+
+export function postCompleteProject(project) {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/complete_project`, {
+      method: "POST",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        project_id: project.id,
+      }),
+    })
+      .then((resp) => resp.json())
+      .then(({ claimedProjects }) => {
+        dispatch({ type: COMPLETE_PROJECT, claimedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+}
+
+export function postAbandonProject(project) {
+  const token = Cookies.get("jwt");
+  return (dispatch) =>
+    fetch(`http://localhost:3001/api/v1/abandon_project`, {
+      method: "POST",
+      headers: {
+        accepts: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        project_id: project.id,
+      }),
+    })
+      .then((resp) => resp.json())
+      .then(({ claimedProjects }) => {
+        dispatch({ type: ABANDON_PROJECT, claimedProjects });
+      })
+      .catch((err) => {
+        dispatch({ type: ERROR, err });
+      });
+}
+

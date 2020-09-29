@@ -5,8 +5,15 @@ import { getProjects } from "../redux/actions";
 import { getSavedProjects } from "../redux/actions";
 import { getClaimed } from "../redux/actions";
 import { getAllClaimed } from "../redux/actions";
+import { Search } from "baseui/icon";
+import { Input } from "baseui/input";
+
 
 class BrowseContainer extends React.Component {
+  state = {
+    searchTerm: "",
+  };
+
   componentWillMount() {
     this.props.getProjects();
     this.props.getAllClaimed();
@@ -25,7 +32,16 @@ class BrowseContainer extends React.Component {
 
   renderIdeas = () => {
     const { projects } = this.props.projectInfo;
-    return (projects || []).map((project) => (
+    const { searchTerm } = this.state;
+
+    const filteredProjects = (projects || []).filter((project) => {
+      return (
+        project?.project_name?.toLowerCase()?.includes(searchTerm) ||
+        project?.tags?.[0]?.tag_name?.toLowerCase()?.includes(searchTerm)
+      );
+    });
+
+    return (filteredProjects || []).map((project) => (
       <IdeaCard key={project.id} project={project} />
     ));
   };
@@ -35,6 +51,15 @@ class BrowseContainer extends React.Component {
       <React.Fragment>
         <div className="idea-cards-container">
           <h1>IDEAS</h1>
+          <div className="idea-search">
+            <Input
+              endEnhancer={<Search size="18px" />}
+              placeholder="Search by name or tag"
+              onChange={
+                (e) => this.setState({ searchTerm: e.target.value })
+              }
+            />
+          </div>
           {this.renderIdeas()}
         </div>
       </React.Fragment>
@@ -47,7 +72,7 @@ const mdp = (dispatch) => {
     getProjects: () => dispatch(getProjects()),
     getSavedProjects: (user) => dispatch(getSavedProjects(user)),
     getClaimed: (user) => dispatch(getClaimed(user)),
-    getAllClaimed: () => dispatch(getAllClaimed())
+    getAllClaimed: () => dispatch(getAllClaimed()),
   };
 };
 

@@ -4,7 +4,7 @@ class Home extends Component {
   render() {
     return (
       <div className="splash-intro">
-        <h1>Welcome to Kick app!</h1>
+        <h1>Welcome to KickApp!</h1>
         <p>
           KickApp is a webapplication that allows anyone to sumit an idea and make their idea a
           reality. We support a community of developers who are excited and

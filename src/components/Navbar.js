@@ -53,21 +53,21 @@ function renderClaimedIdeas() {
   );
 }
 
-function renderProfile() {
-  return (
-    <StyledLink
-      $style={{
-        textDecoration: "none",
-        color: "inherit",
-        ":hover": { color: "inherit" },
-        ":visited": { color: "inherit" },
-      }}
-      href={"/login"}
-    >
-      Profile
-    </StyledLink>
-  );
-}
+// function renderProfile() {
+//   return (
+//     <StyledLink
+//       $style={{
+//         textDecoration: "none",
+//         color: "inherit",
+//         ":hover": { color: "inherit" },
+//         ":visited": { color: "inherit" },
+//       }}
+//       href={"/login"}
+//     >
+//       Profile
+//     </StyledLink>
+//   );
+// }
 
 const appDisplayName = (
   <StyledLink
@@ -141,12 +141,12 @@ export const Navbar = ({ userInfo }) => {
       mapItemToNode: renderClaimedIdeas,
       mapItemToString: renderItem,
     },
-    {
-      icon: UserIcon,
-      item: { label: "Profile" },
-      mapItemToNode: renderProfile,
-      mapItemToString: renderItem,
-    },
+    // {
+    //   icon: UserIcon,
+    //   item: { label: "Profile" },
+    //   mapItemToNode: renderProfile,
+    //   mapItemToString: renderItem,
+    // },
     {
       icon: UserIcon,
       item: { label: "Logout" },

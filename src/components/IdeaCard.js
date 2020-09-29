@@ -6,6 +6,7 @@ import { postSaveProject } from "../redux/actions";
 import { removeSavedProject } from "../redux/actions";
 import { postClaimedProject } from "../redux/actions";
 import { unClaimProject } from "../redux/actions";
+import {Tag} from 'baseui/tag';
 import Stripe from "./Stripe";
 
 class IdeaCard extends React.Component {
@@ -33,7 +34,7 @@ class IdeaCard extends React.Component {
       ) {
         return (
           <div className="claimed-div">
-            {`Claimed by ${project?.project_developer?.username}`} -> <a href={`mailto:${project?.project_developer.email}`}>Contact dev</a>
+            {`Claimed by ${project?.project_developer?.username}`} -> <a href={`mailto:${project?.project_developer?.email}`}>Contact dev</a>
           </div>
         );
       } else {
@@ -64,6 +65,15 @@ class IdeaCard extends React.Component {
     return (projectInfo.claimedProjects || []).find(
       (a) => a.project_id === project.id
     );
+  }
+
+  getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   getFormattedDate = (date) => {
@@ -131,17 +141,18 @@ class IdeaCard extends React.Component {
       project: updatedProject,
     });
   };
-
+  
   render() {
+    
     const { project, userInfo } = this.props;
     const isSavedClick = this.isSavedByUser();
     const isClaimedByDev = this.isClaimedByDev();
-    console.log("stuff", project, isClaimedByDev);
+
     return (
-      <React.Fragment>
+      <React.Fragment >
         <div className="card">
           <div className="card-author">
-            <div className="ellipses"></div>
+            <div className="ellipses" style={{background: `${this.getRandomColor()}`}}></div>
             <div className="submitter-name">{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</div>
             <div className="total-sponsored">
               Total Sponsored: {project?.sponsor_amount}
@@ -170,8 +181,15 @@ class IdeaCard extends React.Component {
             </div>
             {this.isClaimedByAnotherDev(isClaimedByDev)}
           </div>
-
+         
           <div className="tags-votes">
+          <div className="tag">
+          
+       {project?.tags[0]?.tag_name ? <Tag closeable={false} kind="primary">
+          {project?.tags[0]?.tag_name} 
+        </Tag> : null }
+          </div>
+
             <div className="num-upvote">
               {this.state.project.num_up_votes}
               <img

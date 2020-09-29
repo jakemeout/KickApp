@@ -10,25 +10,34 @@ class ClaimedIdeasContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.userInfo.user.id !== prevProps.userInfo.user.id) {
-      this.props.getClaimed(this.props.userInfo.user)
+    if (
+      this.props.userInfo.user.id !== prevProps.userInfo.user.id ||
+      this.props.projectInfo.projects !== prevProps.projectInfo.projects
+    ) {
+      this.props.getClaimed(this.props.userInfo.user);
     }
   }
 
   renderClaimedIdeas = () => {
     const { claimedProjects } = this.props.projectInfo;
-    
 
-    return claimedProjects.map((project) => <ClaimedIdeas key={project.id} project={project} />);
+    return claimedProjects?.map((project) => (
+      <ClaimedIdeas key={project.id} project={project} />
+    ));
   };
   render() {
     return (
       <React.Fragment>
         <h1 className="saved-idea-header">Claimed Ideas</h1>
-        <hr style={{width: '60%', margin: "auto", marginTop: "5%", marginBottom: "5%"}}/>
-        <div className="saved-idea-container">
-        {this.renderClaimedIdeas()}
-        </div>
+        <hr
+          style={{
+            width: "60%",
+            margin: "auto",
+            marginTop: "5%",
+            marginBottom: "5%",
+          }}
+        />
+        <div className="saved-idea-container">{this.renderClaimedIdeas()}</div>
       </React.Fragment>
     );
   }

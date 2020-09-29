@@ -17,3 +17,6 @@ export const UNCLAIM = "UNCLAIM"
 export const GET_CLAIMED = "GET_CLAIMED"
 export const GET_ALL_CLAIMED = "GET_ALL_CLAIMED"
 export const START_PROJECT = "START_PROJECT"
+export const COMPLETE_PROJECT = "COMPLETE_PROJECT"
+export const ABANDON_PROJECT = "ABANDON_PROJECT"
+export const SEARCH = 'SEARCH';

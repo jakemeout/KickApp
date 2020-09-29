@@ -9,7 +9,9 @@ import {
   GET_CLAIMED,
   GET_ALL_CLAIMED,
   START_PROJECT,
-  SAVE,
+  COMPLETE_PROJECT,
+  ABANDON_PROJECT,
+  SAVE
 } from "../actionTypes";
 const initialState = {
   project: {},
@@ -18,6 +20,7 @@ const initialState = {
   claimedProjects: [],
   AllClaimedProjects: [],
   error: null,
+  searchTerm: "",
 };
 
 const projectReducer = (state = initialState, action) => {
@@ -33,12 +36,21 @@ const projectReducer = (state = initialState, action) => {
         ...state,
         projects: action.projects,
       };
-      case START_PROJECT:
-        return {
-          ...state,
-          claimedProjects: action.claimedProjects,
-        };
-      
+    case START_PROJECT:
+      return {
+        ...state,
+        claimedProjects: action.claimedProjects,
+      };
+    case COMPLETE_PROJECT:
+      return {
+        ...state,
+        claimedProjects: action.claimedProjects,
+      };
+    case ABANDON_PROJECT:
+      return {
+        ...state,
+        claimedProjects: action.claimedProjects,
+      };
     case SAVE:
       return {
         ...state,
