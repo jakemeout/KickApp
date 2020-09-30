@@ -123,7 +123,7 @@ class SubmitIdea extends React.Component {
         size={SIZE.default}
         role={ROLE.dialog}
       >
-        <ModalHeader>Hi {`${userInfo.user.first_name}`}</ModalHeader>
+        <ModalHeader>Hi {`${userInfo.user.first_name}`}, share your idea with the world!</ModalHeader>
         <ModalBody>
           <FormControl label="Idea Title">
             <Input

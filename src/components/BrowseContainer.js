@@ -37,11 +37,14 @@ class BrowseContainer extends React.Component {
     const { searchTerm } = this.state;
 
     const filteredProjects = (projects || []).filter((project) => {
+      console.log(project)
       return (
         project?.project_name?.toLowerCase()?.includes(searchTerm) ||
-        project?.tags?.[0]?.tag_name?.toLowerCase()?.includes(searchTerm) ||
+        (project?.tags || []).find(t => t?.tag_name?.toLowerCase()?.includes(searchTerm)) ||
          project?.project_idea_summary?.toLowerCase()?.includes(searchTerm) ||
-         project?.project_problem_statement?.toLowerCase()?.includes(searchTerm)
+         project?.project_problem_statement?.toLowerCase()?.includes(searchTerm) ||
+         project?.project_submitter.first_name?.toLowerCase()?.includes(searchTerm) ||
+         project?.project_submitter.last_name?.toLowerCase()?.includes(searchTerm)
       );
     });
 

@@ -3,20 +3,14 @@ import { useState } from "react";
 import { useStyletron } from "baseui";
 import { StyledLink } from "baseui/link";
 import { Layer } from "baseui/layer";
-// import { connect } from "react-redux";
 import Cookies from "js-cookie";
-import {
-  
-  Delete,
-  Overflow as UserIcon,
-  Upload as Icon,
-} from "baseui/icon";
+import { useSelector } from "react-redux";
+import { Delete, Overflow as UserIcon, Upload as Icon } from "baseui/icon";
 import { Unstable_AppNavBar as AppNavBar, POSITION } from "baseui/app-nav-bar";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
-import SubmitIdea from "./SubmitIdea"; 
-
+import SubmitIdea from "./SubmitIdea";
 
 function renderItem(item) {
   return item.label;
@@ -25,17 +19,28 @@ function renderItem(item) {
 function renderProjects() {
   return (
     <Link
+      style={{
+        textDecoration: "none",
+        color: "inherit",
+        ":hover": { color: "inherit" },
+        ":visited": { color: "inherit" },
+      }}
       to={"/projects"}
     >
       Projects
     </Link>
   );
-
 }
 
 function renderSavedIdeas() {
   return (
     <Link
+      style={{
+        textDecoration: "none",
+        color: "inherit",
+        ":hover": { color: "inherit" },
+        ":visited": { color: "inherit" },
+      }}
       to={"/saved"}
     >
       Saved Ideas
@@ -46,6 +51,12 @@ function renderSavedIdeas() {
 function renderClaimedIdeas() {
   return (
     <Link
+      style={{
+        textDecoration: "none",
+        color: "inherit",
+        ":hover": { color: "inherit" },
+        ":visited": { color: "inherit" },
+      }}
       to={"/claimed"}
     >
       Claimed Ideas
@@ -79,7 +90,11 @@ const appDisplayName = (
     }}
     href={"/"}
   >
-    <img  alt="brainlight-logo" className="logo" src={require("./brainlight.png")} />
+    <img
+      alt="brainlight-logo"
+      className="logo"
+      src={require("./brainlight.png")}
+    />
   </StyledLink>
 );
 
@@ -179,20 +194,18 @@ export const Navbar = ({ userInfo }) => {
       mapItemToString: renderItem,
       navExitIcon: Delete,
       navPosition: { desktop: POSITION.horizontal },
-    }
+    },
   ];
-
-
 
   function renderBrowseIdeas() {
     return (
       <Link
-        // $style={{
-        //   textDecoration: "none",
-        //   color: "inherit",
-        //   ":hover": { color: "inherit" },
-        //   ":visited": { color: "inherit" },
-        // }}
+        style={{
+          textDecoration: "none",
+          color: "inherit",
+          ":hover": { color: "inherit" },
+          ":visited": { color: "inherit" },
+        }}
         to="/browse"
       >
         Browse Ideas
@@ -257,15 +270,13 @@ export const Navbar = ({ userInfo }) => {
           ":hover": { color: "inherit" },
           ":visited": { color: "inherit" },
         }}
-        onClick={() => Cookies.remove('jwt')}
+        onClick={() => Cookies.remove("jwt")}
         href={"/"}
       >
         Log Out
       </StyledLink>
     );
   }
-
- 
 
   const userName = user && `${user.first_name} ${user.last_name}`;
 
@@ -300,6 +311,7 @@ export const Navbar = ({ userInfo }) => {
               if (item === activeNavItem) return setActiveNavItem(null);
               setActiveNavItem(item);
             }}
+            // {user?.is_developer ? USER_NAV : USER_NAV.mapItemToNode = null}
             userNav={loggedIn && USER_NAV}
             username={userName}
             usernameSubtitle={nickName}
