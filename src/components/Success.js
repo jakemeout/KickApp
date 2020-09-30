@@ -1,16 +1,12 @@
 import React from 'react'
-
 import { useSelector } from 'react-redux'
 import {
     Modal,
     ModalHeader,
     ModalBody,
-    ModalFooter,
-    ModalButton,
     SIZE,
     ROLE
   } from "baseui/modal";
-  import { KIND as ButtonKind } from "baseui/button";
   
   export default () => {
       const user = useSelector(state => state.userInfo.user)

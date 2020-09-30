@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import SavedIdeas from "./SavedIdeas";
+import ClaimedIdeas from "./ClaimedIdeas";
 import { getProjects } from "../redux/actions";
 import { getSavedProjects } from "../redux/actions";
 
@@ -18,27 +18,18 @@ class SavedIdeasContainer extends React.Component {
     }
   }
 
-  renderSavedIdeas = () => {
+  render() {
     const { savedProjects } = this.props.projectInfo;
 
-    return savedProjects.map((project) => (
-      <SavedIdeas key={project.id} project={project} />
-    ));
-  };
-  render() {
     return (
-      <React.Fragment>
-        <h1 className="saved-idea-header">Saved Ideas</h1>
-        <hr
-          style={{
-            width: "60%",
-            margin: "auto",
-            marginTop: "5%",
-            marginBottom: "5%",
-          }}
-        />
-        <div className="saved-idea-container">{this.renderSavedIdeas()}</div>
-      </React.Fragment>
+      <div className="idea-cards-container">
+        <h1>Saved Ideas</h1>
+        <div>
+          {(savedProjects || []).map((project) => (
+            <ClaimedIdeas key={project.id} project={project} />
+          ))}
+        </div>
+      </div>
     );
   }
 }

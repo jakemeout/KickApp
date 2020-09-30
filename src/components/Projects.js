@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { getProjects } from "../redux/actions";
 import {
   Unstable_StatefulDataTable,
-  CategoricalColumn,
-  NumericalColumn,
   StringColumn,
+  NumericalColumn,
   NUMERICAL_FORMATS,
 } from "baseui/data-table";
 
@@ -44,17 +43,18 @@ class Projects extends React.Component {
       }),
       StringColumn({
         title: "Title",
-        mapDataToValue: (data) => data.project_name,
+        mapDataToValue: (data) => data?.project_name,
       }),
       StringColumn({
         title: "Problem Statement",
         maxWidth: 200,
-        mapDataToValue: (data) => data.project_problem_statement,
+        mapDataToValue: (data) => data?.project_problem_statement,
       }),
       StringColumn({
         title: "Idea Summary",
         maxWidth: 200,
-        mapDataToValue: (data) => data.project_idea_summary,
+        lineClamp: 3,
+        mapDataToValue: (data) => data?.project_idea_summary,
       }),
       StringColumn({
         title: "Status",
@@ -62,33 +62,33 @@ class Projects extends React.Component {
       }),
       StringColumn({
         title: "Start date",
-        mapDataToValue: (data) => data.project_start_date,
+        mapDataToValue: (data) => data?.project_start_date,
       }),
       StringColumn({
         title: "Estimated end date",
-        mapDataToValue: (data) => data.project_end_date,
+        mapDataToValue: (data) => data?.project_end_date,
       }),
       StringColumn({
         title: "Completion date",
-        mapDataToValue: (data) => data.completion_date,
+        mapDataToValue: (data) => data?.completion_date,
       }),
       StringColumn({
         title: "Up Votes",
-        mapDataToValue: (data) => data.num_up_votes,
+        mapDataToValue: (data) => data?.num_up_votes,
       }),
       StringColumn({
         title: "Down Votes",
-        mapDataToValue: (data) => data.num_down_votes,
+        mapDataToValue: (data) => data?.num_down_votes,
       }),
       StringColumn({
         title: "Sponsored Amount",
         maxWidth: 50,
-        mapDataToValue: (data) => data.sponsor_amount,
+        mapDataToValue: (data) => data?.sponsor_amount,
       }),
 
     ];
 
-    const rows = (projects?.filter( a => a.project_started === true) || []).map((r) => ({ id: r.title, data: r }));
+    const rows = (projects?.filter( a => a?.project_started === true) || [])?.map((r) => ({ id: r?.title, data: r }));
     return (
       <div style={{ height: "600px", margin: "auto", marginTop: "15%" }}>
         <Unstable_StatefulDataTable

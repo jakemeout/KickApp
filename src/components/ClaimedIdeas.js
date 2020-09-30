@@ -1,23 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { styled } from "baseui";
 import { StatefulCalendar } from "baseui/datepicker";
-import { Button } from "baseui/button";
-
+import { Button, KIND } from "baseui/button";
+import ArrowRight from "baseui/icon/arrow-right";
+import { Label2 } from "baseui/typography";
+import { ProgressSteps, NumberedStep } from "baseui/progress-steps";
 import { postStartProject } from "../redux/actions";
 import { postCompleteProject } from "../redux/actions";
 import { postAbandonProject } from "../redux/actions";
 
-const Label = styled("div", ({ $theme }) => ({
-  ...$theme.typography.LabelMedium,
-}));
-
-const DataContainer = styled("div", ({ $theme }) => ({
-  display: "flex",
-  justifyContent: "space-between",
-}));
-
-const STEPS = ["Start", "In progress", "Completed", "Abandoned"];
 class ClaimedIdeas extends React.Component {
   state = {
     hover: false,
@@ -64,63 +55,93 @@ class ClaimedIdeas extends React.Component {
     return <StatefulCalendar onChange={({ date }) => console.log(date)} />;
   };
 
-  render() {
-    const { project = {} } = this.props.project;
+  renderNextStepButton = (nextStep) => {
+    return (
+      <Button size="compact" onClick={() => this.handleNextStep(nextStep)}>
+        Next
+      </Button>
+    );
+  };
+
+  renderProgressBar = () => {
     const nextStep = this.getNextStep();
+    return (
+      <div className="card-subsection" style={{ minWidth: "200px" }}>
+        <ProgressSteps current={nextStep}>
+          <NumberedStep title="Ready to start">
+            {this.renderNextStepButton(nextStep)}
+          </NumberedStep>
+          <NumberedStep title="In progress">
+            {this.renderNextStepButton(nextStep)}
+          </NumberedStep>
+          <NumberedStep title="Complete" />
+        </ProgressSteps>
+      </div>
+    );
+  };
+
+  render() {
+    const { isClaimed = false } = this.props;
+    const { project = {} } = this.props.project;
 
     return (
-      <React.Fragment>
-        <div className="claimed-ideas-mini-cards">
-          <DataContainer>
-            <Label>Submitter</Label>
-            <span>{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</span>
-          </DataContainer>
+      <div className="card" style={{ maxWidth: "600px" }}>
+        <div className="card-section">
+          <div>
+            <div className="card-subsection">
+              <Label2>Submitter</Label2>
+              <span>{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</span>
+            </div>
 
-          <DataContainer>
-            <Label>Idea name</Label>
-            <span>{project?.project_name}</span>
-          </DataContainer>
+            <div className="card-subsection">
+              <Label2>Idea name</Label2>
+              <span>{project?.project_name}</span>
+            </div>
 
-          <DataContainer>
-            <Label>Idea summary</Label>
-            <span>{project?.project_idea_summary}</span>
-          </DataContainer>
+            <div className="card-subsection">
+              <Label2>Idea summary</Label2>
+              <span>{project?.project_idea_summary}</span>
+            </div>
 
-          {!project.completed && !project.abandoned && (
-            <DataContainer>
-              <Button onClick={() => this.handleNextStep(nextStep)}>
-                {STEPS[nextStep]} Project
-              </Button>
-              <Button onClick={() => this.handleAbandonProject()}>
+            {project.completed && (
+              <div className="card-subsection">
+                <Label2>Completed on</Label2>
+                <span>{project?.completion_date}</span>
+              </div>
+            )}
+
+            {project.abandoned && (
+              <div className="card-subsection">
+                <Label2>Abandoned on</Label2>
+                <span>{project?.abandoned_date}</span>
+              </div>
+            )}
+          </div>
+          {isClaimed && this.renderProgressBar()}
+        </div>
+
+        {!project.completed && !project.abandoned && (
+          <div className="card-subsection" style={{ display: "flex" }}>
+            {isClaimed && (
+              <Button
+                onClick={() => this.handleAbandonProject()}
+                style={{ marginRight: "8px" }}
+              >
                 Abandon Project
               </Button>
-            </DataContainer>
-          )}
-
-          {project.completed && (
-            <DataContainer>
-              <Label>Completed on</Label>
-              <span>{project?.completion_date}</span>
-            </DataContainer>
-          )}
-
-          {project.abandoned && (
-            <DataContainer>
-              <Label>Abandoned on</Label>
-              <span>{project?.abandoned_date}</span>
-            </DataContainer>
-          )}
-
-          <h5>
-            <a
+            )}
+            <Button
+              $as="a"
               href={`mailto:${project?.project_submitter?.email}`}
-              className="contact-submitter"
+              kind={KIND.secondary}
+              endEnhancer={() => <ArrowRight size={24} />}
+              style={{ marginRight: "8px" }}
             >
               Contact Submitter
-            </a>
-          </h5>
-        </div>
-      </React.Fragment>
+            </Button>
+          </div>
+        )}
+      </div>
     );
   }
 }

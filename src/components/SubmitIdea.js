@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { useStyletron } from "baseui";
 import {
   Modal,
@@ -14,10 +13,10 @@ import { Textarea } from "baseui/textarea";
 import { Tag, VARIANT as TAG_VARIANT } from "baseui/tag";
 import { Input, StyledInput } from "baseui/input";
 import { FormControl } from "baseui/form-control";
-
 import { connect } from "react-redux";
 import { createProject } from "../redux/actions";
 import "../styles/SubmitIdea.css";
+
 
 const InputReplacement = React.forwardRef(
   ({ tags, removeTag, ...restProps }, ref) => {
@@ -61,7 +60,7 @@ class SubmitIdea extends React.Component {
   handleChange(event) {
     const { userInfo } = this.props;
     const { name, value } = event.target;
-    const { project, tag } = this.state;
+    const { project} = this.state;
     this.setState({
       project: {
         ...project,
@@ -105,6 +104,7 @@ class SubmitIdea extends React.Component {
         this.removeTag(tags[tags.length - 1]);
         return;
       }
+      default:
     }
   };
 

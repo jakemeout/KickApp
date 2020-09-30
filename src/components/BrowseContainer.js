@@ -39,7 +39,9 @@ class BrowseContainer extends React.Component {
     const filteredProjects = (projects || []).filter((project) => {
       return (
         project?.project_name?.toLowerCase()?.includes(searchTerm) ||
-        project?.tags?.[0]?.tag_name?.toLowerCase()?.includes(searchTerm)
+        project?.tags?.[0]?.tag_name?.toLowerCase()?.includes(searchTerm) ||
+         project?.project_idea_summary?.toLowerCase()?.includes(searchTerm) ||
+         project?.project_problem_statement?.toLowerCase()?.includes(searchTerm)
       );
     });
 
@@ -56,7 +58,7 @@ class BrowseContainer extends React.Component {
           <div className="idea-search">
             <Input
               endEnhancer={<Search size="18px" />}
-              placeholder="Search by name or tag"
+              placeholder="Search for an idea"
               onChange={
                 (e) => this.setState({ searchTerm: e.target.value.toLowerCase() })
               }

@@ -7,17 +7,11 @@ import { removeSavedProject } from "../redux/actions";
 import { postClaimedProject } from "../redux/actions";
 import { unClaimProject } from "../redux/actions";
 import { Tag } from "baseui/tag";
-import { styled } from "baseui";
-import { Button } from "baseui/button";
+import { Avatar } from "baseui/avatar";
+import { Label1, Label2 } from "baseui/typography";
+import { StatefulTooltip, PLACEMENT } from "baseui/tooltip";
+import { Checkbox, STYLE_TYPE } from "baseui/checkbox";
 import Stripe from "./Stripe";
-
-const DataContainer = styled("div", ({ $theme }) => ({
-  display: "flex",
-  justifyContent: "space-between",
-}));
-const Label = styled("div", ({ $theme }) => ({
-  ...$theme.typography.LabelMedium,
-}));
 
 class IdeaCard extends React.Component {
   state = {
@@ -35,45 +29,43 @@ class IdeaCard extends React.Component {
   isClaimedByAnotherDev(isClaimedByDev) {
     const { userInfo } = this.props;
     const { project } = this.props;
+
     if (userInfo.user.is_developer) {
-      if (
+      const claimed =
         project?.is_claimed &&
-        project?.project_developer_id !== userInfo?.user?.id
-      ) {
-        return (
-          <div className="claimed-div">
-            <DataContainer>
-              <Label>Idea summary</Label>
-              <span>
-                {`Claimed by ${project?.project_developer?.username}`} ->
-                <a href={`mailto:${project?.project_developer?.email}`}>
-                  Contact dev
-                </a>
-              </span>
-            </DataContainer>
-          </div>
-        );
-      } else {
-        return (
-          <div className="claim-div">
-            <button
-              className="claim-button"
-              onClick={() => this.handleClaim(!isClaimedByDev)}
-            >
-              {isClaimedByDev ? "Unclaim" : "Claim"}
-            </button>
-          </div>
-        );
-      }
-    } else if (
-      project?.is_claimed &&
-      project?.project_developer_id !== userInfo?.user?.id
-    )
-      return (
-        <div className="claimed-div">
-          {`Claimed by dev ${project?.project_developer?.username}`}
-        </div>
+        project?.project_developer_id !== userInfo?.user?.id;
+
+      const tooltipContent = (
+        <>
+          {`Claimed by ${project?.project_developer?.username}`}.{" "}
+          <a href={`mailto:${project?.project_developer?.email}`}>
+            Contact dev
+          </a>
+        </>
       );
+
+      return (
+        <StatefulTooltip
+          content={() => claimed && tooltipContent}
+          placement={PLACEMENT.top}
+          showArrow
+          returnFocus
+          autoFocus
+        >
+          <div>
+            <Checkbox
+              checked={isClaimedByDev}
+              onChange={() => this.handleClaim(!isClaimedByDev)}
+              checkmarkType={STYLE_TYPE.toggle_round}
+              disabled={claimed}
+            >
+              Claim
+            </Checkbox>
+          </div>
+        </StatefulTooltip>
+      );
+    }
+    return null;
   }
 
   isClaimedByDev() {
@@ -124,15 +116,15 @@ class IdeaCard extends React.Component {
     const { project } = this.props;
     if (project?.tags?.length > 0) {
       return project?.tags?.map((tag) => (
-        <Tag closeable={false} kind="primary">
-          {" "}
-          {tag?.tag_name}{" "}
+        <Tag closeable={false} kind="primary" >
+          {tag?.tag_name}
         </Tag>
       ));
     } else {
       return null;
     }
   };
+
   handleSponsor = () => {
     this.setState({ isStripeShowing: !this.state.isStripeShowing });
   };
@@ -150,91 +142,120 @@ class IdeaCard extends React.Component {
       updateVote = isUpVote ? 1 : -1;
     }
     postAddVote(project, userInfo.user, updateVote);
+    console.log("---", updateVote)
   };
 
   render() {
     const { project, userInfo } = this.props;
     const isSavedClick = this.isSavedByUser();
     const isClaimedByDev = this.isClaimedByDev();
-    console.log(project?.user_votes?.[0]?.vote_action);
+    const userFullName = `${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`;
     return (
       <React.Fragment>
         <div className="card">
-          <div className="card-author">
-            <div className="ellipses" style={{ background: "#000" }}></div>
-            <div className="submitter-name">{`${project?.project_submitter?.first_name} ${project?.project_submitter?.last_name}`}</div>
-            <div className="total-sponsored">
-              {`Total Sponsored: $${
-                project?.sponsor_amount ? project?.sponsor_amount : 0
-              }`}
+          <div className="card-section">
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Avatar name={userFullName} size="scale1400" />
+              <div style={{ marginLeft: "12px" }}>
+                <Label1>{userFullName}</Label1>
+                <label style={{ fontSize: "12px", color: "grey" }}>
+                  Submitted on: {this.getFormattedDate(project.created_at)}
+                </label>
+              </div>
             </div>
-            <div className="bookark-div">
-              <img
-                alt="bookmark"
-                className="bookmark"
-                src={
-                  isSavedClick
-                    ? require("./bookmark_black.png")
-                    : require("./bookmark.png")
-                }
-                onClick={() => this.handleSave(!isSavedClick)}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-            <div className="sponsor">
-              <img
-                alt="sponsor"
-                className="sponsor-card"
-                src={require("./sponsor.png")}
-                onClick={() => this.handleSponsor()}
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-            {this.isClaimedByAnotherDev(isClaimedByDev)}
+            <img
+              alt="bookmark"
+              className="bookmark"
+              src={
+                isSavedClick
+                  ? require("./bookmark_black.png")
+                  : require("./bookmark.png")
+              }
+              onClick={() => this.handleSave(!isSavedClick)}
+              style={{ cursor: "pointer", width: "24px", height: "40px" }}
+            />
           </div>
 
-          <div className="tags-votes">
-            <div className="tag">{this.renderTags()}</div>
-            <div className="up-vote-num">{project?.num_up_votes}</div>
-            <div className="down-vote-num">{project?.num_down_votes}</div>
-            <div className="upvote">
-              <img
-                alt="thumbsup"
-                className="thumbsup"
-                src={
-                  project?.user_votes?.[0]?.vote_action === 1
-                    ? require("./black_thumb_up.png")
-                    : require("./thumbsUp.png")
-                }
-                onClick={() => this.handleVote(true)}
-                style={{ cursor: "pointer" }}
-              />
+          <div className="card-section" style={{ flexDirection: "column" }}>
+            <div className="card-subsection">
+              <Label2>Idea Name</Label2>
+              <span>{project.project_name}</span>
             </div>
-            <div className="downvote">
-              <img
-                alt="thumbsdown"
-                className="thumbsdown"
-                src={
-                  project?.user_votes?.[0]?.vote_action === -1
-                    ? require("./black_thumb_down.png")
-                    : require("./thumbsDown.png")
-                }
-                onClick={() => this.handleVote(false)}
-                style={{ cursor: "pointer" }}
-              />
+            <div className="card-subsection">
+              <Label2>Problem Statement</Label2>
+              <span>{project.project_problem_statement}</span>
+            </div>
+            <div className="card-subsection">
+              <Label2>Idea Summary</Label2>
+              <span>{project.project_idea_summary}</span>
+            </div>
+            <div className="card-subsection">
+              {project?.tags?.length > 0 ? <Label2>Tags</Label2> : null}
+              {this.renderTags()}
             </div>
           </div>
-          <div className="card-details">
-            <div className="submitted-on">
-              {" "}
-              Submitted on: {this.getFormattedDate(project.created_at)}
+
+          <div className="card-section" style={{ alignItems: "center" }}>
+            <div className="card-subsection">
+              {this.isClaimedByAnotherDev(isClaimedByDev)}
             </div>
-            <div className="idea-name"> Idea Name: {project.project_name}</div>
-            <div className="problem-name">
-              Problem Statement: {project.project_problem_statement}
-            </div>
-            <div className="idea-summary">
-              Idea Summary: {project.project_idea_summary}
+
+            <div className="card-subsection">
+              <StatefulTooltip
+                content={() => `$${project?.sponsor_amount || 0} sponsored`}
+                placement={PLACEMENT.top}
+                showArrow
+                returnFocus
+                autoFocus
+              >
+                <img
+                  className="action-icon"
+                  alt="sponsor"
+                  src={require("./sponsor.png")}
+                  onClick={() => this.handleSponsor()}
+                  style={{ cursor: "pointer" }}
+                />
+              </StatefulTooltip>
+
+              <StatefulTooltip
+                content={() => `${project?.num_up_votes || 0} liked`}
+                placement={PLACEMENT.top}
+                showArrow
+                returnFocus
+                autoFocus
+              >
+                <img
+                  className="action-icon"
+                  alt="thumbsup"
+                  src={
+                    project?.user_votes?.[0]?.vote_action === 1
+                      ? require("./black_thumb_up.png")
+                      : require("./thumbsUp.png")
+                  }
+                  onClick={() => this.handleVote(true)}
+                  style={{ cursor: "pointer" }}
+                />
+              </StatefulTooltip>
+
+              <StatefulTooltip
+                content={() => `${project?.num_down_votes || 0} disliked`}
+                placement={PLACEMENT.top}
+                showArrow
+                returnFocus
+                autoFocus
+              >
+                <img
+                  className="action-icon"
+                  alt="thumbsdown"
+                  src={
+                    project?.user_votes?.[0]?.vote_action === -1
+                      ? require("./black_thumb_down.png")
+                      : require("./thumbsDown.png")
+                  }
+                  onClick={() => this.handleVote(false)}
+                  style={{ cursor: "pointer" }}
+                />
+              </StatefulTooltip>
             </div>
           </div>
         </div>
