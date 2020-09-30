@@ -8,5 +8,7 @@ class User < ApplicationRecord
     has_many :claimed_projects, class_name: :UserSavedProject, foreign_key: :claimed_by_id
     has_many :projects, through: :user_saved_projects
     has_many :project_comments
+    has_many :user_votes
+    has_many :projects, through: :user_votes
     # has_many :submitter
 end

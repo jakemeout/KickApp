@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users, only: [:create]
-      resources :charges
+      post '/votes', to: 'user_votes#create'
+      post '/charges', to: 'charges#create'
+      post '/stripe', to: 'charges#update'
       post '/abandon_project', to: 'projects#abandon_project'
       post '/complete_project', to: 'projects#complete_project'
       post '/start_project', to: 'projects#start_project'

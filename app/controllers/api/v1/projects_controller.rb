@@ -1,16 +1,16 @@
 class Api::V1::ProjectsController < ApplicationController
     before_action :authorized
     
-
-    # include: {project: {include: :project_submitter}}
     def create
         project = Project.create(project_params)
         if project.valid?
           projects = Project.all
-          if params[:tag].length > 0
-            tag = Tag.create(tag_name: params[:tag])
-            ProjectTag.create(tag_id: tag.id, project_id: project.id,)
-          end
+            if params[:tags].length > 0
+                tags = params[:tags]
+                created_tags = []
+                tags.each { |tag| created_tags.push(Tag.create(tag_name: tag)) }
+                created_tags.each { |tag| ProjectTag.create(tag_id: tag.id, project_id: project.id)}
+            end
           render json: { projects: projects}, include: [:project_submitter, :project_developer], status: :created
         else
           render json: { error: 'failed to create project' }, status: :not_acceptable
@@ -30,12 +30,14 @@ class Api::V1::ProjectsController < ApplicationController
     def index
          projects = Project.all
         sorted_projects = projects.sort_by { |a| [a.num_up_votes ? 1 : 0, a.num_up_votes] }.reverse!
-        render json: {projects: sorted_projects}, include: [:project_submitter, :project_developer, :tags], status: :accepted
+        render json: {projects: sorted_projects}, include: [:project_submitter, :project_developer, :tags, :user_votes], status: :accepted
     end
 
     def abandon_project
       project = Project.find(params[:project_id])
       project.abandoned = true
+      project.in_progress = false
+      project.completed = false
       project.abandoned_date = Time.now.strftime("%m/%d/%Y")
       project.save
       render json: {claimedProjects: UserSavedProject.where(claimed_by_id: current_user.id)}, include: {project: {include: :project_submitter}}, status: :created

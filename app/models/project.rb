@@ -8,4 +8,6 @@ class Project < ApplicationRecord
         has_many :project_tags
         has_many :tags, through: :project_tags
         
+        has_many :user_votes
+        has_many :users, through: :user_votes
 end
