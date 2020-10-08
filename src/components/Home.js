@@ -17,19 +17,19 @@ class Home extends Component {
           </p>
         </div>
         <hr style={{ margin: "auto", marginTop: "4%", maxWidth: "900px" }} />
-        <h2 style={{ margin: "auto", marginTop: "4%", textAlign: "center" }}>
+        <h1 style={{ margin: "auto", marginTop: "4%", textAlign: "center" }}>
           How It Works
-        </h2>
+        </h1>
         <div
           className="how-it-works-container"
-          style={{ margin: "auto", marginTop: "2%", maxWidth: "900px" }}
+          style={{ margin: "auto", marginTop: "6%", maxWidth: "1200px" }}
         >
           <div className="how-it-works-section">
             <img alt="lightbulb-paper-pencil" src={require("./prop-1.png")} />
             <p>
               Write out your problem statement and your idea! It’s as simple as
-              that! <br></br>You can add money and sponser your idea if you’d
-              like too. <br></br>After submitting your idea you can browse and
+              that! You can add money and sponser your idea if you’d
+              like too. After submitting your idea you can browse and
               help rank and sponsor other ideas.
             </p>
           </div>
@@ -37,8 +37,7 @@ class Home extends Component {
             <img alt="thumbup-thumbdown-vote" src={require("./prop-2.png")} />
             <p>
               After you idea has been submitted, the community will rank your
-              idea for it to be claimed and worked on.<br></br>
-              Any developer who has created an account can now browse ideas and
+              idea for it to be claimed and worked on. Any developer who has created an account can now browse ideas and
               claim the idea to work on. So expect a ping from a friendly dev
               :).
             </p>
@@ -50,8 +49,7 @@ class Home extends Component {
             />
             <p>
               Once an idea has been claimed, a developer and the idea creator
-              can launch a project together!<br></br>
-              Others can view the projects, find out more details, and see their
+              can launch a project together! Others can view the projects, find out more details, and see the project
               progress.
             </p>
           </div>
