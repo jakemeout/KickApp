@@ -25,7 +25,7 @@ export function createUser(user) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
   return (dispatch) => {
-    fetch("https://kick--app-api.herokuapp.com/api/v1/users", {
+    fetch("https://kicksterapp-api.herokuapp.com/api/v1/users", {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -52,7 +52,7 @@ export const logInUser = (user) => {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
   };
   return (dispatch) => {
-    fetch("https://kick--app-api.herokuapp.com/api/v1/login", {
+    fetch("https://kicksterapp-api.herokuapp.com/api/v1/login", {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -75,7 +75,7 @@ export const getProfileFetch = () => {
   const token = Cookies.get("jwt");
   return (dispatch) => {
     if (token) {
-      return fetch("https://kick--app-api.herokuapp.com/api/v1/profile", {
+      return fetch("https://kicksterapp-api.herokuapp.com/api/v1/profile", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export const getProfileFetch = () => {
 export function createProject(project, tags) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    fetch("https://kick--app-api.herokuapp.com/api/v1/projects", {
+    fetch("https://kicksterapp-api.herokuapp.com/api/v1/projects", {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -119,7 +119,7 @@ export function createProject(project, tags) {
 export function getProjects() {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    fetch("https://kick--app-api.herokuapp.com/api/v1/projects", {
+    fetch("https://kicksterapp-api.herokuapp.com/api/v1/projects", {
       method: "GET",
       headers: {
         accepts: "application/json",
@@ -140,7 +140,7 @@ export function getProjects() {
 export function postAddVote(project, user, vote_action) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    fetch(`https://kick--app-api.herokuapp.com/api/v1//votes`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1//votes`, {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -166,7 +166,7 @@ export function postAddVote(project, user, vote_action) {
 export function postSaveProject(project, user) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/save`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/save`, {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -190,7 +190,7 @@ export function postSaveProject(project, user) {
 export function getSavedProjects(user) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    return fetch(`https://kick--app-api.herokuapp.com/api/v1/save/${user?.id}`, {
+    return fetch(`https://kicksterapp-api.herokuapp.com/api/v1/save/${user?.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -211,7 +211,7 @@ export function getSavedProjects(user) {
 export function removeSavedProject(savedUserid) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/save/${savedUserid}`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/save/${savedUserid}`, {
       method: "DELETE",
       headers: {
         accepts: "application/json",
@@ -231,7 +231,7 @@ export function removeSavedProject(savedUserid) {
 export function postClaimedProject(project, user) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/claim`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/claim`, {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -255,7 +255,7 @@ export function postClaimedProject(project, user) {
 export function unClaimProject(claimedUserid) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/claim/${claimedUserid}`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/claim/${claimedUserid}`, {
       method: "DELETE",
       headers: {
         accepts: "application/json",
@@ -275,7 +275,7 @@ export function unClaimProject(claimedUserid) {
 export function getClaimed(user) {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    return fetch(`https://kick--app-api.herokuapp.com/api/v1/claimed/${user?.id}`, {
+    return fetch(`https://kicksterapp-api.herokuapp.com/api/v1/claimed/${user?.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -296,7 +296,7 @@ export function getClaimed(user) {
 export function getAllClaimed() {
   const token = Cookies.get("jwt");
   return (dispatch) => {
-    return fetch(`https://kick--app-api.herokuapp.com/api/v1/claimed`, {
+    return fetch(`https://kicksterapp-api.herokuapp.com/api/v1/claimed`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +317,7 @@ export function getAllClaimed() {
 export function postStartProject(project) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/start_project`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/start_project`, {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -340,7 +340,7 @@ export function postStartProject(project) {
 export function postCompleteProject(project) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/complete_project`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/complete_project`, {
       method: "POST",
       headers: {
         accepts: "application/json",
@@ -363,7 +363,7 @@ export function postCompleteProject(project) {
 export function postAbandonProject(project) {
   const token = Cookies.get("jwt");
   return (dispatch) =>
-    fetch(`https://kick--app-api.herokuapp.com/api/v1/abandon_project`, {
+    fetch(`https://kicksterapp-api.herokuapp.com/api/v1/abandon_project`, {
       method: "POST",
       headers: {
         accepts: "application/json",
