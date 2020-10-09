@@ -1,4 +1,2 @@
-# class UserSavedProjectSerializer < ActiveModel::Serializer
-#     attributes :id
-# belongs_to :project
-# end
+class UserSavedProjectSerializer < ActiveModel::Serializer
+end
