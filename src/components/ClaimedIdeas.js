@@ -52,7 +52,7 @@ class ClaimedIdeas extends React.Component {
   };
 
   handleSetEndDate = () => {
-    return <StatefulCalendar onChange={({ date }) => console.log(date)} />;
+    return <StatefulCalendar onChange={({ date })} />;
   };
 
   renderNextStepButton = (nextStep) => {

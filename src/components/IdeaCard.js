@@ -142,7 +142,6 @@ class IdeaCard extends React.Component {
       updateVote = isUpVote ? 1 : -1;
     }
     postAddVote(project, userInfo.user, updateVote);
-    console.log("---", updateVote)
   };
 
   render() {

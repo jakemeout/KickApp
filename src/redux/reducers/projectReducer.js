@@ -25,7 +25,6 @@ const initialState = {
 };
 
 const projectReducer = (state = initialState, action) => {
-  console.log("ACTION FROM PROJECT REDUCER", action);
   switch (action.type) {
     case SUBMIT_PROJECT_IDEA:
       return {

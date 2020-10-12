@@ -10,7 +10,6 @@ import {
   
   export default () => {
       const user = useSelector(state => state.userInfo.user)
-      console.log(user)
     const [isOpen, setIsOpen] = React.useState(true);
     return (
       <Modal
