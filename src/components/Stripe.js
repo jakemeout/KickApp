@@ -30,7 +30,7 @@ export default function Stripe(props) {
     const project_id = props.project.id;
     const token = Cookies.get("jwt");
     const stripe = await stripePromise;
-    const response = await fetch("http://localhost:3001/api/v1/charges", {
+    const response = await fetch("https://kicksterapp-api.herokuapp.com/api/v1/charges", {
       method: "POST",
       headers: {
         accepts: "application/json",
