@@ -21,8 +21,8 @@ class Api::V1::ChargesController < ApplicationController
               quantity: 1
             ],
             mode: 'payment',
-            success_url: 'http://localhost:3000/success',
-            cancel_url: 'http://localhost:3000/browse',
+            success_url: 'https://kicksterapp.herokuapp.com/success',
+            cancel_url: 'https://kicksterapp.herokuapp.com//browse',
         })
         Stripe::PaymentIntent.update(
             'pi_1HRjNMFVMZF5LB9VobMwlX2g',
