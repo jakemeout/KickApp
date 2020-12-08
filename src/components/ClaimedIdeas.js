@@ -51,9 +51,9 @@ class ClaimedIdeas extends React.Component {
     postAbandonProject(project.project);
   };
 
-  handleSetEndDate = () => {
-    return <StatefulCalendar onChange={({ date })} />;
-  };
+  // handleSetEndDate = () => {
+  //   return <StatefulCalendar onChange={({ date })} />;
+  // };
 
   renderNextStepButton = (nextStep) => {
     return (

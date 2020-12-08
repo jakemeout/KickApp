@@ -93,7 +93,7 @@ const appDisplayName = (
     <img
       alt="brainlight-logo"
       className="logo"
-      src={require("./brainlight.png")}
+      src={require("../images/brainlight.png")}
     />
   </StyledLink>
 );

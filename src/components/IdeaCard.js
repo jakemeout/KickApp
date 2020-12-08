@@ -167,8 +167,8 @@ class IdeaCard extends React.Component {
               className="bookmark"
               src={
                 isSavedClick
-                  ? require("./bookmark_black.png")
-                  : require("./bookmark.png")
+                  ? require("../images/bookmark_black.png")
+                  : require("../images/bookmark.png")
               }
               onClick={() => this.handleSave(!isSavedClick)}
               style={{ cursor: "pointer", width: "24px", height: "40px" }}
@@ -228,8 +228,8 @@ class IdeaCard extends React.Component {
                   alt="thumbsup"
                   src={
                     project?.user_votes?.[0]?.vote_action === 1
-                      ? require("./black_thumb_up.png")
-                      : require("./thumbsUp.png")
+                      ? require("../images/black_thumb_up.png")
+                      : require("../images/thumbsUp.png")
                   }
                   onClick={() => this.handleVote(true)}
                   style={{ cursor: "pointer" }}
@@ -248,8 +248,8 @@ class IdeaCard extends React.Component {
                   alt="thumbsdown"
                   src={
                     project?.user_votes?.[0]?.vote_action === -1
-                      ? require("./black_thumb_down.png")
-                      : require("./thumbsDown.png")
+                      ? require("../images/black_thumb_down.png")
+                      : require("../images/thumbsDown.png")
                   }
                   onClick={() => this.handleVote(false)}
                   style={{ cursor: "pointer" }}

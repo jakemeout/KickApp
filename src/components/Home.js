@@ -25,7 +25,7 @@ class Home extends Component {
           style={{ margin: "auto", marginTop: "6%", maxWidth: "1200px" }}
         >
           <div className="how-it-works-section">
-            <img alt="lightbulb-paper-pencil" src={require("./prop-1.png")} />
+            <img alt="lightbulb-paper-pencil" src={require("../images/prop-1.png")} />
             <p>
               Write out your problem statement and your idea! It’s as simple as
               that! You can add money and sponser your idea if you’d
@@ -34,7 +34,7 @@ class Home extends Component {
             </p>
           </div>
           <div className="how-it-works-section">
-            <img alt="thumbup-thumbdown-vote" src={require("./prop-2.png")} />
+            <img alt="thumbup-thumbdown-vote" src={require("../images/prop-2.png")} />
             <p>
               After you idea has been submitted, the community will rank your
               idea for it to be claimed and worked on. Any developer who has created an account can now browse ideas and
@@ -45,7 +45,7 @@ class Home extends Component {
           <div className="how-it-works-section">
             <img
               alt="rocket-launch-computerscreen"
-              src={require("./prop-3.png")}
+              src={require("../images/prop-3.png")}
             />
             <p>
               Once an idea has been claimed, a developer and the idea creator
@@ -59,27 +59,27 @@ class Home extends Component {
             <li><a href="mailto:jhyde@me.com"><img
             style={{ height: "20px", width: "20px"}}
               alt="email"
-              src={require("./email.png")}
+              src={require("../images/email.png")}
             />Contact</a></li>
             <li><a href="https://github.com/jakemeout"><img
             style={{ height: "20px", width: "20px"}}
               alt="github"
-              src={require("./github.png")}
+              src={require("../images/github.png")}
             />GitHub</a></li>
             <li><a href="https://www.linkedin.com/in/jacobhyde"><img
             style={{ height: "20px", width: "20px"}}
               alt="linkedin"
-              src={require("./linkedin.png")}
+              src={require("../images/linkedin.png")}
             />LinkedIn</a></li>
             <li><a href="https://twitter.com/jakeme0ut"><img
             style={{ height: "20px", width: "20px"}}
               alt="twitter"
-              src={require("./twitter.png")}
+              src={require("../images/twitter.png")}
             />Twitter</a></li>
             <li><a href="https://medium.com/@jacobosity"><img
             style={{ height: "30px", width: "30px"}}
               alt="twitter"
-              src={require("./Medium.png")}
+              src={require("../images/Medium.png")}
             />Medium</a></li>
           </ul>
         </div>
