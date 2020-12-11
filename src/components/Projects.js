@@ -2,11 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { getProjects } from "../redux/actions";
 import {
-  Unstable_StatefulDataTable,
+  StatefulDataTable,
   StringColumn,
-  NumericalColumn,
-  NUMERICAL_FORMATS,
-} from "baseui/data-table";
+} from 'baseui/data-table';
 
 class Projects extends React.Component {
   constructor(props) {
@@ -91,7 +89,7 @@ class Projects extends React.Component {
     const rows = (projects?.filter( a => a?.project_started === true) || [])?.map((r) => ({ id: r?.title, data: r }));
     return (
       <div style={{ height: "600px", margin: "auto", marginTop: "15%" }}>
-        <Unstable_StatefulDataTable
+        <StatefulDataTable
           columns={columns}
           rows={rows}
           rowHeight={78}

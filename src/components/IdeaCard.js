@@ -167,8 +167,8 @@ class IdeaCard extends React.Component {
               className="bookmark"
               src={
                 isSavedClick
-                  ? require("../images/bookmark_black.png")
-                  : require("../images/bookmark.png")
+                  ? require("../assets/bookmark_black.png")
+                  : require("../assets/bookmark.png")
               }
               onClick={() => this.handleSave(!isSavedClick)}
               style={{ cursor: "pointer", width: "24px", height: "40px" }}
@@ -210,7 +210,7 @@ class IdeaCard extends React.Component {
                 <img
                   className="action-icon"
                   alt="sponsor"
-                  src={require("./sponsor.png")}
+                  src={require("../assets/sponsor.png")}
                   onClick={() => this.handleSponsor()}
                   style={{ cursor: "pointer" }}
                 />
@@ -228,8 +228,8 @@ class IdeaCard extends React.Component {
                   alt="thumbsup"
                   src={
                     project?.user_votes?.[0]?.vote_action === 1
-                      ? require("../images/black_thumb_up.png")
-                      : require("../images/thumbsUp.png")
+                      ? require("../assets/black_thumb_up.png")
+                      : require("../assets/thumbsUp.png")
                   }
                   onClick={() => this.handleVote(true)}
                   style={{ cursor: "pointer" }}
@@ -248,8 +248,8 @@ class IdeaCard extends React.Component {
                   alt="thumbsdown"
                   src={
                     project?.user_votes?.[0]?.vote_action === -1
-                      ? require("../images/black_thumb_down.png")
-                      : require("../images/thumbsDown.png")
+                      ? require("../assets/black_thumb_down.png")
+                      : require("../assets/thumbsDown.png")
                   }
                   onClick={() => this.handleVote(false)}
                   style={{ cursor: "pointer" }}
