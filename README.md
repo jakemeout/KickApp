@@ -21,6 +21,11 @@ rails s // To run the local server
 1. Run `npm start` to run the local server
 1. Ensure to navigate to the Redux Actions file to change the fetch calls to the backend server and port you specified when running the rails server. 
 
-
+# ScreenShots
+![](HomePage.png)
+![](SignUp.png)
+![](SubmitAnIdea.png)
+![](SubmitAnIdeaFilled.png)
+![](Ideas.png)
 
 Please follow up with any questions by emailing me at [Jhyde@me.com](mailto:jhyde@me.com)
