@@ -11,6 +11,14 @@ import { Avatar } from "baseui/avatar";
 import { Label1, Label2 } from "baseui/typography";
 import { StatefulTooltip, PLACEMENT } from "baseui/tooltip";
 import { Checkbox, STYLE_TYPE } from "baseui/checkbox";
+import bookmarkChecked from "../assets/bookmark_black.png"
+import bookmark from "../assets/bookmark.png"
+import sponserIcon from "../assets/sponsor.png"
+import thumbsUpChecked from "../assets/black_thumb_up.png"
+import thumbsUp from "../assets/thumbsUp.png"
+import thumbsDownChecked from "../assets/black_thumb_down.png"
+import thumbsDown from "../assets/thumbsDown.png"
+
 import Stripe from "./Stripe";
 
 class IdeaCard extends React.Component {
@@ -167,8 +175,8 @@ class IdeaCard extends React.Component {
               className="bookmark"
               src={
                 isSavedClick
-                  ? require("../assets/bookmark_black.png")
-                  : require("../assets/bookmark.png")
+                  ? bookmarkChecked
+                  : bookmark
               }
               onClick={() => this.handleSave(!isSavedClick)}
               style={{ cursor: "pointer", width: "24px", height: "40px" }}
@@ -210,7 +218,7 @@ class IdeaCard extends React.Component {
                 <img
                   className="action-icon"
                   alt="sponsor"
-                  src={require("../assets/sponsor.png")}
+                  src={sponserIcon}
                   onClick={() => this.handleSponsor()}
                   style={{ cursor: "pointer" }}
                 />
@@ -228,8 +236,8 @@ class IdeaCard extends React.Component {
                   alt="thumbsup"
                   src={
                     project?.user_votes?.[0]?.vote_action === 1
-                      ? require("../assets/black_thumb_up.png")
-                      : require("../assets/thumbsUp.png")
+                      ? thumbsUpChecked
+                      : thumbsUp
                   }
                   onClick={() => this.handleVote(true)}
                   style={{ cursor: "pointer" }}
@@ -248,8 +256,8 @@ class IdeaCard extends React.Component {
                   alt="thumbsdown"
                   src={
                     project?.user_votes?.[0]?.vote_action === -1
-                      ? require("../assets/black_thumb_down.png")
-                      : require("../assets/thumbsDown.png")
+                      ? thumbsDownChecked
+                      : thumbsDown
                   }
                   onClick={() => this.handleVote(false)}
                   style={{ cursor: "pointer" }}
