@@ -1,0 +1,275 @@
+.App {
+  text-align: center;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-sin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 800px;
+  overflow: auto;
+  background: #ffffff;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+/* CARDS */
+.card-section {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.card-subsection {
+  margin: 9px 0;
+}
+
+.idea-search {
+  margin: 24px auto;
+  max-width: 800px;
+}
+
+.idea-cards-container {
+  margin-top: 120px;
+  padding: 24px;
+}
+.idea-cards-container h1 {
+  text-align: center;
+}
+
+.sponsor-card {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: 585px;
+  bottom: 30px;
+}
+.total-sponsored {
+  position: absolute;
+  width: 300px;
+  left: 460px;
+  bottom: 0px;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 14px;
+}
+.action-icon {
+  width: 30px;
+  height: 32px;
+}
+
+.ellipses {
+  position: absolute;
+  width: 53px;
+  height: 53px;
+  left: 20px;
+  top: 15px;
+  border-radius: 80%;
+  box-shadow: -1px 4px 10px 0px rgba(68, 68, 68, 0.4);
+  background: #6ec29b;
+}
+
+.card-author > .submitter-name {
+  position: absolute;
+  width: 129px;
+  height: 21px;
+  left: 90px;
+  top: 35px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.tags-votes {
+  position: absolute;
+  width: 676px;
+  height: 31px;
+  left: 20px;
+  bottom: 75px;
+}
+
+.upvote {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 520px;
+  top: 12px;
+}
+.downvote {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 595px;
+  top: 14px;
+}
+.up-vote-num {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 565px;
+  top: 25px;
+}
+.down-vote-num {
+  position: absolute;
+  width: 29px;
+  height: 24px;
+  left: 645px;
+  top: 25px;
+}
+.card-details {
+  position: absolute;
+  width: 676px;
+  height: 100px;
+  left: 20px;
+  top: 110px;
+}
+
+.submitted-on {
+  font-size: 12px;
+  text-align: center;
+}
+
+.claim-button {
+  position: absolute;
+  left: 270px;
+}
+
+.saved-container {
+  margin-top: 20%;
+  margin-left: 25%;
+  margin-right: 25%;
+}
+
+.how-it-works-container {
+  display: flex;
+}
+
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 12%;
+  background-color: rgb(41, 38, 38);
+  color: white;
+  text-align: center;
+}
+.footer ul {
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+  font-weight: 700;
+  padding: 5px;
+  margin-top: 4%;
+}
+.footer a {
+  color: inherit;
+}
+.saved-idea-container {
+  display: flex;
+
+  flex-wrap: wrap;
+}
+.saved-idea-header {
+  text-align: center;
+  margin-top: 15%;
+}
+
+.saved-ideas-mini-cards {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 20px;
+
+  position: relative;
+  width: 200px;
+  height: 280px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  overflow-y: scroll;
+  margin: 2%;
+}
+
+.saved-ideas-mini-cards h5 {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.claimed-div {
+  position: absolute;
+  left: 230px;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 10;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.claimed-ideas-mini-cards {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  max-width: 800px;
+
+  background: #ffffff;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  overflow-y: scroll;
+  margin: 12px;
+  padding: 24px;
+}
+
+.contact-submitter {
+  text-align: center;
+}
+
+.how-it-works-section {
+  width: 45%;
+  text-align: center;
+}
+.how-it-works-section p {
+  text-align: left;
+}
+
+.how-it-works-section img{
+  height: 42%;
+  width: 35%;
+
+}
