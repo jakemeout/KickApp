@@ -4,7 +4,7 @@ KickApp is a two-sided marketplace where users can create app ideas and connect 
 Signup and try out the app here: [KickApp](https://kicksterapp.herokuapp.com/)
 
 # The Stack 
-This application utilizes Ruby, Ruby on Rails, JavaScriptReact, Redux, Baseweb 
+This application utilizes Ruby, Ruby on Rails, JavaScript, React, Redux, Baseweb 
 
 # Local Setup Guide
 NOTE: If you do not have postgresql installed, please install it with homebrew https://www.postgresql.org/download/macosx/. Another resource to summarize this installation is here https://flaviocopes.com/postgres-how-to-install/.
